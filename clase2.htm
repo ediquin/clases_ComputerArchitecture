@@ -1,0 +1,1010 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Código Binario y Sistemas Numéricos en Arquitectura de Computadoras</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .header-bg {
+            background-color: #193254;
+            color: white;
+            padding: 2rem 0;
+        }
+        .section-heading {
+            border-left: 5px solid #193254;
+            padding-left: 10px;
+            margin-top: 30px;
+        }
+        .binary-example {
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .exercise-card {
+            margin-bottom: 20px;
+            border-left: 4px solid #4285f4;
+        }
+        .application-card {
+            height: 100%;
+            border-top: 4px solid #34a853;
+        }
+        .formula {
+            font-family: monospace;
+            background-color: #f0f0f0;
+            padding: 5px 10px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+        .bit-table td, .bit-table th {
+            text-align: center;
+            width: 40px;
+        }
+        .resources-list a {
+            text-decoration: none;
+        }
+        .resources-list a:hover {
+            text-decoration: underline;
+        }
+        .code-example {
+            font-family: monospace;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .highlight {
+            background-color: #fffacd;
+            padding: 2px;
+        }
+        .bit-visualization {
+            border: 1px solid #dee2e6;
+            border-radius: 5px;
+            overflow: hidden;
+        }
+        .conversion-steps {
+            background-color: #e9f5ff;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        #progress-bar {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            height: 5px;
+            background-color: #34a853;
+            width: 0%;
+            transition: width 0.3s;
+        }
+        .nav-link.active {
+            background-color: #193254 !important;
+            color: white !important;
+        }
+        .custom-tooltip {
+            cursor: pointer;
+            text-decoration: underline dotted;
+        }
+        .resource-card {
+            transition: transform 0.3s;
+            height: 100%;
+        }
+        .resource-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        .quiz-feedback {
+            display: none;
+        }
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navbar-example">
+    <div id="progress-bar"></div>
+    
+    <!-- Navegación -->
+    <nav id="navbar-example" class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Sistemas Numéricos</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#introduccion">Introducción</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#sistemas-numericos">Sistemas Numéricos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#conversiones">Conversiones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#operaciones">Operaciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#aplicaciones">Aplicaciones</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#ejercicios">Ejercicios</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#recursos">Recursos</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Encabezado Principal -->
+    <header class="header-bg">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-md-8">
+                    <h1 class="display-4">Código Binario y Sistemas Numéricos</h1>
+                    <p class="lead">Fundamentos esenciales para la Arquitectura de Computadoras</p>
+                </div>
+                <div class="col-md-4 text-center">
+                    <div class="p-3 bg-light text-dark rounded binary-example">
+                        <span class="fs-1">01001100</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container py-5">
+        <!-- Introducción -->
+        <section id="introduccion">
+            <h2 class="section-heading">Introducción al Mundo Digital</h2>
+            <div class="row mt-4">
+                <div class="col-md-8">
+                    <p>Las computadoras modernas, a pesar de su aparente complejidad, funcionan a partir de un principio sorprendentemente simple: <strong>la dualidad</strong>. En el corazón de cada dispositivo digital encontramos componentes electrónicos que solo pueden estar en uno de dos estados posibles: encendido (1) o apagado (0).</p>
+                    
+                    <p>Este fenómeno no es meramente una elección de diseño, sino una consecuencia natural de trabajar con circuitos electrónicos, donde la presencia o ausencia de corriente eléctrica determina los estados lógicos. El sistema binario surge entonces como el lenguaje fundamental de las máquinas, permitiéndoles procesar y almacenar información mediante largas secuencias de unos y ceros.</p>
+
+                    <p>En esta clase, exploraremos cómo estos simples dígitos binarios (bits) constituyen la base de toda la computación moderna, desde los cálculos más elementales hasta los algoritmos más sofisticados de inteligencia artificial.</p>
+                </div>
+                <div class="col-md-4">
+                    <div class="card">
+                        <div class="card-header bg-dark text-white">
+                            ¿Por qué binario?
+                        </div>
+                        <div class="card-body">
+                            <p>Las computadoras utilizan el sistema binario porque:</p>
+                            <ul>
+                                <li>Los componentes electrónicos tienen dos estados estables (alto/bajo)</li>
+                                <li>La representación binaria minimiza errores en la transmisión de datos</li>
+                                <li>Facilita la implementación del álgebra booleana</li>
+                                <li>Permite sistemas más robustos frente al ruido eléctrico</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Sistemas Numéricos -->
+        <section id="sistemas-numericos" class="mt-5">
+            <h2 class="section-heading">Sistemas Numéricos Fundamentales</h2>
+            <p class="mt-3">Un sistema numérico es un conjunto de símbolos y reglas utilizados para representar cantidades. Aunque estamos familiarizados con el sistema decimal (base 10), en computación se utilizan principalmente cuatro sistemas:</p>
+            
+            <div class="row row-cols-1 row-cols-md-2 g-4 mt-3">
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Sistema Decimal (Base 10)</h5>
+                            <hr>
+                            <p class="card-text">Utiliza 10 símbolos distintos: 0, 1, 2, 3, 4, 5, 6, 7, 8 y 9.</p>
+                            <p class="card-text">Cada posición representa una potencia de 10:</p>
+                            <div class="binary-example">
+                                123 = 1×10<sup>2</sup> + 2×10<sup>1</sup> + 3×10<sup>0</sup>
+                            </div>
+                            <p class="card-text mt-2">Es nuestro sistema cotidiano debido a que tenemos diez dedos.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Sistema Binario (Base 2)</h5>
+                            <hr>
+                            <p class="card-text">Utiliza solo 2 símbolos: 0 y 1 (bits).</p>
+                            <p class="card-text">Cada posición representa una potencia de 2:</p>
+                            <div class="binary-example">
+                                1011 = 1×2<sup>3</sup> + 0×2<sup>2</sup> + 1×2<sup>1</sup> + 1×2<sup>0</sup> = 11
+                            </div>
+                            <p class="card-text mt-2">Es el lenguaje nativo de los circuitos electrónicos.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Sistema Octal (Base 8)</h5>
+                            <hr>
+                            <p class="card-text">Utiliza 8 símbolos: 0, 1, 2, 3, 4, 5, 6 y 7.</p>
+                            <p class="card-text">Cada posición representa una potencia de 8:</p>
+                            <div class="binary-example">
+                                347 = 3×8<sup>2</sup> + 4×8<sup>1</sup> + 7×8<sup>0</sup> = 231
+                            </div>
+                            <p class="card-text mt-2">Históricamente útil por su fácil conversión desde binario (cada dígito octal representa 3 bits).</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">Sistema Hexadecimal (Base 16)</h5>
+                            <hr>
+                            <p class="card-text">Utiliza 16 símbolos: 0-9 y A-F (donde A=10, B=11, ..., F=15).</p>
+                            <p class="card-text">Cada posición representa una potencia de 16:</p>
+                            <div class="binary-example">
+                                2AF = 2×16<sup>2</sup> + 10×16<sup>1</sup> + 15×16<sup>0</sup> = 687
+                            </div>
+                            <p class="card-text mt-2">Ampliamente usado en programación por su compacidad (cada dígito hexadecimal representa 4 bits).</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-4">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Anatomía de un Byte</h5>
+                </div>
+                <div class="card-body">
+                    <p>Un <strong>byte</strong> es una unidad fundamental de almacenamiento compuesta por 8 bits. Veamos su estructura:</p>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-bordered bit-table">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Bit Position</th>
+                                    <th>7</th>
+                                    <th>6</th>
+                                    <th>5</th>
+                                    <th>4</th>
+                                    <th>3</th>
+                                    <th>2</th>
+                                    <th>1</th>
+                                    <th>0</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Valor Binario</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>Potencia de 2</td>
+                                    <td>2<sup>7</sup></td>
+                                    <td>2<sup>6</sup></td>
+                                    <td>2<sup>5</sup></td>
+                                    <td>2<sup>4</sup></td>
+                                    <td>2<sup>3</sup></td>
+                                    <td>2<sup>2</sup></td>
+                                    <td>2<sup>1</sup></td>
+                                    <td>2<sup>0</sup></td>
+                                </tr>
+                                <tr>
+                                    <td>Valor Decimal</td>
+                                    <td>128</td>
+                                    <td>0</td>
+                                    <td>32</td>
+                                    <td>0</td>
+                                    <td>8</td>
+                                    <td>4</td>
+                                    <td>0</td>
+                                    <td>1</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    
+                    <p class="mt-3">Valor decimal total: 128 + 32 + 8 + 4 + 1 = 173</p>
+                    <p>Un byte puede representar 2<sup>8</sup> = 256 valores diferentes (0-255), lo que lo convierte en la unidad perfecta para representar caracteres ASCII, colores básicos, o pequeños valores enteros.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Conversiones entre Sistemas -->
+        <section id="conversiones" class="mt-5">
+            <h2 class="section-heading">Conversiones entre Sistemas Numéricos</h2>
+            <p class="mt-3">La capacidad de convertir números entre diferentes sistemas es fundamental para cualquier estudiante de arquitectura de computadoras. Veamos los métodos más comunes:</p>
+
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">De Decimal a Binario</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Método:</strong> División sucesiva por 2, tomando los restos en orden inverso.</p>
+                            
+                            <div class="conversion-steps">
+                                <p class="fw-bold">Ejemplo: Convertir 42 a binario</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <table class="table table-sm">
+                                            <tr>
+                                                <td>42 ÷ 2 = 21</td>
+                                                <td>resto 0</td>
+                                            </tr>
+                                            <tr>
+                                                <td>21 ÷ 2 = 10</td>
+                                                <td>resto 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>10 ÷ 2 = 5</td>
+                                                <td>resto 0</td>
+                                            </tr>
+                                            <tr>
+                                                <td>5 ÷ 2 = 2</td>
+                                                <td>resto 1</td>
+                                            </tr>
+                                            <tr>
+                                                <td>2 ÷ 2 = 1</td>
+                                                <td>resto 0</td>
+                                            </tr>
+                                            <tr>
+                                                <td>1 ÷ 2 = 0</td>
+                                                <td>resto 1</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-center justify-content-center">
+                                        <div class="text-center">
+                                            <p class="fw-bold">Resultado:</p>
+                                            <div class="binary-example fs-4">
+                                                42<sub>10</sub> = 101010<sub>2</sub>
+                                            </div>
+                                            <small class="text-muted">(Leer restos de abajo hacia arriba)</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header bg-success text-white">
+                            <h5 class="mb-0">De Binario a Decimal</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Método:</strong> Multiplicar cada dígito por su potencia de 2 correspondiente y sumar todos los resultados.</p>
+                            
+                            <div class="conversion-steps">
+                                <p class="fw-bold">Ejemplo: Convertir 101010 a decimal</p>
+                                <table class="table table-sm">
+                                    <tr>
+                                        <td>1 × 2<sup>5</sup> = 1 × 32 = 32</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0 × 2<sup>4</sup> = 0 × 16 = 0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1 × 2<sup>3</sup> = 1 × 8 = 8</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0 × 2<sup>2</sup> = 0 × 4 = 0</td>
+                                    </tr>
+                                    <tr>
+                                        <td>1 × 2<sup>1</sup> = 1 × 2 = 2</td>
+                                    </tr>
+                                    <tr>
+                                        <td>0 × 2<sup>0</sup> = 0 × 1 = 0</td>
+                                    </tr>
+                                    <tr class="table-active">
+                                        <td><strong>Suma total = 42</strong></td>
+                                    </tr>
+                                </table>
+                                <div class="text-center">
+                                    <div class="binary-example">
+                                        101010<sub>2</sub> = 42<sub>10</sub>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row mt-2">
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header bg-danger text-white">
+                            <h5 class="mb-0">De Binario a Hexadecimal</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Método:</strong> Agrupar los bits de 4 en 4 (desde la derecha) y convertir cada grupo en su equivalente hexadecimal.</p>
+                            
+                            <div class="conversion-steps">
+                                <p class="fw-bold">Ejemplo: Convertir 11011110 a hexadecimal</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <table class="table table-sm">
+                                            <tr>
+                                                <th>Grupo</th>
+                                                <th>Valor Decimal</th>
+                                                <th>Hexadecimal</th>
+                                            </tr>
+                                            <tr>
+                                                <td>1101</td>
+                                                <td>13</td>
+                                                <td>D</td>
+                                            </tr>
+                                            <tr>
+                                                <td>1110</td>
+                                                <td>14</td>
+                                                <td>E</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                    <div class="col-md-6 d-flex align-items-center justify-content-center">
+                                        <div class="text-center">
+                                            <p class="fw-bold">Resultado:</p>
+                                            <div class="binary-example">
+                                                11011110<sub>2</sub> = DE<sub>16</sub>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card mb-4">
+                        <div class="card-header bg-warning text-dark">
+                            <h5 class="mb-0">De Hexadecimal a Binario</h5>
+                        </div>
+                        <div class="card-body">
+                            <p><strong>Método:</strong> Convertir cada dígito hexadecimal a su equivalente de 4 bits.</p>
+                            
+                            <div class="conversion-steps">
+                                <p class="fw-bold">Ejemplo: Convertir 2F8 a binario</p>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <tr>
+                                            <th>Hex</th>
+                                            <th>Decimal</th>
+                                            <th>Binario (4 bits)</th>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>2</td>
+                                            <td>0010</td>
+                                        </tr>
+                                        <tr>
+                                            <td>F</td>
+                                            <td>15</td>
+                                            <td>1111</td>
+                                        </tr>
+                                        <tr>
+                                            <td>8</td>
+                                            <td>8</td>
+                                            <td>1000</td>
+                                        </tr>
+                                    </table>
+                                </div>
+                                <div class="text-center">
+                                    <p class="fw-bold">Resultado:</p>
+                                    <div class="binary-example">
+                                        2F8<sub>16</sub> = 001011111000<sub>2</sub>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card mt-3">
+                <div class="card-header bg-info text-white">
+                    <h5 class="mb-0">Tabla de Equivalencias</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table table-striped">
+                            <thead class="table-dark">
+                                <tr>
+                                    <th>Decimal</th>
+                                    <th>Binario</th>
+                                    <th>Octal</th>
+                                    <th>Hexadecimal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>0</td>
+                                    <td>0000</td>
+                                    <td>0</td>
+                                    <td>0</td>
+                                </tr>
+                                <tr>
+                                    <td>1</td>
+                                    <td>0001</td>
+                                    <td>1</td>
+                                    <td>1</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>0010</td>
+                                    <td>2</td>
+                                    <td>2</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>0011</td>
+                                    <td>3</td>
+                                    <td>3</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>0100</td>
+                                    <td>4</td>
+                                    <td>4</td>
+                                </tr>
+                                <tr>
+                                    <td>5</td>
+                                    <td>0101</td>
+                                    <td>5</td>
+                                    <td>5</td>
+                                </tr>
+                                <tr>
+                                    <td>6</td>
+                                    <td>0110</td>
+                                    <td>6</td>
+                                    <td>6</td>
+                                </tr>
+                                <tr>
+                                    <td>7</td>
+                                    <td>0111</td>
+                                    <td>7</td>
+                                    <td>7</td>
+                                </tr>
+                                <tr>
+                                    <td>8</td>
+                                    <td>1000</td>
+                                    <td>10</td>
+                                    <td>8</td>
+                                </tr>
+                                <tr>
+                                    <td>9</td>
+                                    <td>1001</td>
+                                    <td>11</td>
+                                    <td>9</td>
+                                </tr>
+                                <tr>
+                                    <td>10</td>
+                                    <td>1010</td>
+                                    <td>12</td>
+                                    <td>A</td>
+                                </tr>
+                                <tr>
+                                    <td>11</td>
+                                    <td>1011</td>
+                                    <td>13</td>
+                                    <td>B</td>
+                                </tr>
+                                <tr>
+                                    <td>12</td>
+                                    <td>1100</td>
+                                    <td>14</td>
+                                    <td>C</td>
+                                </tr>
+                                <tr>
+                                    <td>13</td>
+                                    <td>1101</td>
+                                    <td>15</td>
+                                    <td>D</td>
+                                </tr>
+                                <tr>
+                                    <td>14</td>
+                                    <td>1110</td>
+                                    <td>16</td>
+                                    <td>E</td>
+                                </tr>
+                                <tr>
+                                    <td>15</td>
+                                    <td>1111</td>
+                                    <td>17</td>
+                                    <td>F</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Operaciones Aritméticas -->
+        <section id="operaciones" class="mt-5">
+            <h2 class="section-heading">Operaciones Aritméticas en Binario</h2>
+            <p class="mt-3">Las operaciones aritméticas en sistema binario siguen reglas similares a las del sistema decimal, pero adaptadas a utilizar solo dos dígitos (0 y 1).</p>
+
+            <div class="row mt-4">
+                <div class="col-lg-6">
+                    <div class="card mb-4">
+                        <div class="card-header bg-primary text-white">
+                            <h5 class="mb-0">Suma Binaria</h5>
+                        </div>
+                        <div class="card-body">
+                            <p>Reglas básicas de la suma binaria:</p>
+                            <ul>
+                                <li>0 + 0 = 0</li>
+                                <li>0 + 1 = 1</li>
+                                <li>1 + 0 = 1</li>
+                                <li>1 + 1 = 0 (y se lleva 1)</li>
+                                <li>1 + 1 + 1 = 1 (y se lleva 1)</li>
+                            </ul>
+
+                            <div class="conversion-steps mt-3">
+                                <p class="fw-bold">Ejemplo: Sumar 1011 + 0110</p>
+                                <div class="binary-example">
+                                    <pre>    1 1     (acarreos)
+    1 0 1 1
+  + 0 1 1 0
+  ---------
+  1 0 0 0 1</pre>
+                                </div>
+                                <p class="mt-2">
+                                </p></div></div></div></div></div></section>
+    <!-- Ejercicios -->
+<section id="ejercicios" class="mt-5">
+    <h2 class="section-heading">Ejercicios Prácticos</h2>
+    <p class="mt-3">Los siguientes ejercicios te ayudarán a consolidar los conceptos aprendidos sobre sistemas numéricos y operaciones binarias.</p>
+
+    <div class="row mt-4">
+        <!-- Ejercicio 1 -->
+        <div class="col-md-6 mb-4">
+            <div class="card exercise-card h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Ejercicio 1: Conversiones Básicas</h5>
+                </div>
+                <div class="card-body">
+                    <p>Realiza las siguientes conversiones:</p>
+                    <ol>
+                        <li>Convierte 157<sub>10</sub> a binario</li>
+                        <li>Convierte 10110111<sub>2</sub> a decimal</li>
+                        <li>Convierte 10110111<sub>2</sub> a hexadecimal</li>
+                        <li>Convierte AF3<sub>16</sub> a binario</li>
+                        <li>Convierte 273<sub>10</sub> a octal</li>
+                    </ol>
+                    <div class="mt-3 border-top pt-3">
+                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#solucion1">Ver Solución</button>
+                        <div id="solucion1" class="collapse mt-2">
+                            <p><strong>Soluciones:</strong></p>
+                            <ol>
+                                <li>157<sub>10</sub> = 10011101<sub>2</sub></li>
+                                <li>10110111<sub>2</sub> = 183<sub>10</sub></li>
+                                <li>10110111<sub>2</sub> = B7<sub>16</sub></li>
+                                <li>AF3<sub>16</sub> = 101011110011<sub>2</sub></li>
+                                <li>273<sub>10</sub> = 421<sub>8</sub></li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 2 -->
+        <div class="col-md-6 mb-4">
+            <div class="card exercise-card h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Ejercicio 2: Operaciones Aritméticas</h5>
+                </div>
+                <div class="card-body">
+                    <p>Realiza las siguientes operaciones en binario:</p>
+                    <ol>
+                        <li>1101 + 1011</li>
+                        <li>10110 - 1101</li>
+                        <li>1011 × 101</li>
+                        <li>11000 ÷ 11</li>
+                        <li>10011101 + 01010110</li>
+                    </ol>
+                    <div class="mt-3 border-top pt-3">
+                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#solucion2">Ver Solución</button>
+                        <div id="solucion2" class="collapse mt-2">
+                            <p><strong>Soluciones:</strong></p>
+                            <ol>
+                                <li>1101 + 1011 = 11000 (13 + 11 = 24)</li>
+                                <li>10110 - 1101 = 1001 (22 - 13 = 9)</li>
+                                <li>1011 × 101 = 110111 (11 × 5 = 55)</li>
+                                <li>11000 ÷ 11 = 1000 resto 0 (24 ÷ 3 = 8)</li>
+                                <li>10011101 + 01010110 = 11110011 (157 + 86 = 243)</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 3 -->
+        <div class="col-md-6 mb-4">
+            <div class="card exercise-card h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Ejercicio 3: Representación de Datos</h5>
+                </div>
+                <div class="card-body">
+                    <p>Resuelve los siguientes problemas:</p>
+                    <ol>
+                        <li>Si utilizamos 8 bits para representar números enteros sin signo, ¿cuál es el número máximo que podemos representar?</li>
+                        <li>Convierte los caracteres ASCII 'C', 'A', 'F', 'E' a binario.</li>
+                        <li>Representa el número -43 en complemento a dos utilizando 8 bits.</li>
+                        <li>¿Qué color RGB representa el código hexadecimal #3A7F21?</li>
+                        <li>Convierte la dirección IP 192.168.1.1 a su representación binaria.</li>
+                    </ol>
+                    <div class="mt-3 border-top pt-3">
+                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#solucion3">Ver Solución</button>
+                        <div id="solucion3" class="collapse mt-2">
+                            <p><strong>Soluciones:</strong></p>
+                            <ol>
+                                <li>Con 8 bits sin signo: 2<sup>8</sup>-1 = 255</li>
+                                <li>'C' = 67 = 01000011, 'A' = 65 = 01000001, 'F' = 70 = 01000110, 'E' = 69 = 01000101</li>
+                                <li>-43 en C2: 11010101 (tomar 43 = 00101011, invertir: 11010100, sumar 1: 11010101)</li>
+                                <li>#3A7F21: R=58, G=127, B=33 (un verde medio con un toque de azul)</li>
+                                <li>192.168.1.1 = 11000000.10101000.00000001.00000001</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Ejercicio 4 -->
+        <div class="col-md-6 mb-4">
+            <div class="card exercise-card h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Ejercicio 4: Aplicaciones Prácticas</h5>
+                </div>
+                <div class="card-body">
+                    <p>Resuelve los siguientes problemas de aplicación:</p>
+                    <ol>
+                        <li>Diseña un circuito digital que implemente un sumador completo de 1 bit.</li>
+                        <li>Calcula la máscara de subred para una red con 30 hosts utilizando notación CIDR.</li>
+                        <li>Determina el rango de direcciones disponibles en la subred 192.168.1.0/27.</li>
+                        <li>Si un archivo contiene 8,192 bytes, ¿cómo expresarías su tamaño en KiB?</li>
+                        <li>Identifica el bit más significativo (MSB) y el menos significativo (LSB) en el número 10110101.</li>
+                    </ol>
+                    <div class="mt-3 border-top pt-3">
+                        <button class="btn btn-sm btn-outline-primary" data-bs-toggle="collapse" data-bs-target="#solucion4">Ver Solución</button>
+                        <div id="solucion4" class="collapse mt-2">
+                            <p><strong>Soluciones:</strong></p>
+                            <ol>
+                                <li>Un sumador completo necesita implementar S = A⊕B⊕Cin y Cout = (A·B) + (Cin·(A⊕B))</li>
+                                <li>Para 30 hosts necesitamos 5 bits (2<sup>5</sup> - 2 = 30), por lo que la máscara es /27 o 255.255.255.224</li>
+                                <li>Rango: 192.168.1.1 - 192.168.1.30, Broadcast: 192.168.1.31</li>
+                                <li>8,192 bytes = 8 KiB (8,192 ÷ 1,024 = 8)</li>
+                                <li>MSB: 1 (extremo izquierdo), LSB: 1 (extremo derecho)</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Proyecto Práctico -->
+    <div class="card mt-4">
+        <div class="card-header bg-success text-white">
+            <h5 class="mb-0">Proyecto Práctico: Simulador de Conversiones</h5>
+        </div>
+        <div class="card-body">
+            <p>Desarrolla un programa simple que permita realizar conversiones entre sistemas numéricos. El programa debe:</p>
+            <ul>
+                <li>Aceptar un número en cualquier base (2, 8, 10, 16)</li>
+                <li>Convertir el número a las otras bases</li>
+                <li>Mostrar el resultado en una interfaz clara</li>
+                <li>Implementar al menos una operación aritmética (suma, resta) en binario</li>
+            </ul>
+            <p>Puedes desarrollar este proyecto en cualquier lenguaje de programación (Python, JavaScript, Java, C++, etc.).</p>
+            <p class="mt-3">Ejemplo de pseudocódigo para la función de conversión de decimal a binario:</p>
+            <div class="code-example">
+function decimalToBinary(decimal):
+    if decimal == 0:
+        return "0"
+    
+    binary = ""
+    while decimal > 0:
+        remainder = decimal % 2
+        binary = str(remainder) + binary
+        decimal = decimal // 2
+    
+    return binary
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Recursos -->
+<section id="recursos" class="mt-5">
+    <h2 class="section-heading">Recursos Adicionales</h2>
+    <p class="mt-3">Para profundizar en tu conocimiento sobre sistemas numéricos y código binario, te recomendamos los siguientes recursos:</p>
+
+    <div class="row mt-4">
+        <!-- Libros -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Libros Recomendados</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush resources-list">
+                        <li class="list-group-item">
+                            <strong>Digital Design: Principles and Practices (5th Edition)</strong><br>
+                            por John F. Wakerly<br>
+                            <a href="https://www.pearson.com/en-us/subject-catalog/p/digital-design-principles-and-practices/P200000003465" target="_blank">Ver en Pearson</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Code: The Hidden Language of Computer Hardware and Software</strong><br>
+                            por Charles Petzold<br>
+                            <a href="https://www.microsoftpressstore.com/store/code-the-hidden-language-of-computer-hardware-and-software-9780735611313" target="_blank">Ver en Microsoft Press</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Computer Organization and Design: The Hardware/Software Interface</strong><br>
+                            por David A. Patterson y John L. Hennessy<br>
+                            <a href="https://www.elsevier.com/books/computer-organization-and-design-mips-edition/patterson/978-0-12-407726-3" target="_blank">Ver en Elsevier</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>But How Do It Know? The Basic Principles of Computers for Everyone</strong><br>
+                            por J. Clark Scott<br>
+                            <a href="http://www.buthowdoitknow.com/" target="_blank">Ver sitio web del libro</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Cursos en línea -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Cursos en Línea</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush resources-list">
+                        <li class="list-group-item">
+                            <strong>Fundamentos de Sistemas Digitales</strong><br>
+                            Coursera - Universidad Autónoma de Barcelona<br>
+                            <a href="https://www.coursera.org/learn/sistemas-digitales" target="_blank">Ver en Coursera</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Arquitectura de Computadoras</strong><br>
+                            edX - Universidad Politécnica de Valencia<br>
+                            <a href="https://www.edx.org/learn/computer-architecture" target="_blank">Ver en edX</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Khan Academy: Computación</strong><br>
+                            Sección de Aritmética Binaria<br>
+                            <a href="https://es.khanacademy.org/computing/computer-science" target="_blank">Ver en Khan Academy</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>CS50: Introduction to Computer Science</strong><br>
+                            Harvard University (gratuito)<br>
+                            <a href="https://cs50.harvard.edu/x/" target="_blank">Ver curso CS50</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row mt-2">
+        <!-- Herramientas en línea -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Herramientas en Línea</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush resources-list">
+                        <li class="list-group-item">
+                            <strong>Convertidor de Sistemas Numéricos</strong><br>
+                            Conversor interactivo entre bases<br>
+                            <a href="https://www.rapidtables.com/convert/number/index.html" target="_blank">RapidTables</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Simulador de Circuitos Digitales</strong><br>
+                            Crea y simula circuitos lógicos<br>
+                            <a href="https://circuitverse.org/" target="_blank">CircuitVerse</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Calculadora Binaria</strong><br>
+                            Operaciones aritméticas en binario<br>
+                            <a href="https://www.calculator.net/binary-calculator.html" target="_blank">Calculator.net</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Digital Logic Simulator</strong><br>
+                            Simulador interactivo de lógica digital<br>
+                            <a href="https://logic.ly/demo/" target="_blank">Logicly</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Canales de YouTube -->
+        <div class="col-md-6 mb-4">
+            <div class="card h-100">
+                <div class="card-header bg-dark text-white">
+                    <h5 class="mb-0">Canales de YouTube</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush resources-list">
+                        <li class="list-group-item">
+                            <strong>Computerphile</strong><br>
+                            Videos sobre ciencias de la computación<br>
+                            <a href="https://www.youtube.com/user/Computerphile" target="_blank">Ver canal</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Ben Eater</strong><br>
+                            Tutoriales sobre electrónica digital y arquitectura de computadoras<br>
+                            <a href="https://www.youtube.com/c/BenEater" target="_blank">Ver canal</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>3Blue1Brown</strong><br>
+                            Matemáticas para ciencias de la computación<br>
+                            <a href="https://www.youtube.com/c/3blue1brown" target="_blank">Ver canal</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Crash Course Computer Science</strong><br>
+                            Serie completa sobre fundamentos de la informática<br>
+                            <a href="https://www.youtube.com/playlist?list=PL8dPuuaLjXtNlUrzyH5r6jN9ulIgZBpdo" target="_blank">Ver lista de reproducción</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Comunidades -->
+    <div class="card mt-2">
+        <div class="card-header bg-dark text-white">
+            <h5 class="mb-0">Comunidades y Foros</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6">
+                    <ul class="list-group list-group-flush resources-list">
+                        <li class="list-group-item">
+                            <strong>Stack Overflow</strong><br>
+                            Preguntas y respuestas de programación<br>
+                            <a href="https://stackoverflow.com/questions/tagged/binary" target="_blank">Preguntas sobre binario</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>Reddit - r/compsci</strong><br>
+                            Comunidad de ciencias de la computación<br>
+                            <a href="https://www.reddit.com/r/compsci/" target="_blank">Ver subreddit</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="col-md-6">
+                    <ul class="list-group list-group-flush resources-list">
+                        <li class="list-group-item">
+                            <strong>Computer Science Stack Exchange</strong><br>
+                            Foro especializado en ciencias de la computación<br>
+                            <a href="https://cs.stackexchange.com/" target="_blank">Ver foro</a>
+                        </li>
+                        <li class="list-group-item">
+                            <strong>GitHub - proyectos de código abierto</strong><br>
+                            Implementaciones de sistemas numéricos<br>
+                            <a href="https://github.com/topics/number-systems" target="_blank">Ver proyectos</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
