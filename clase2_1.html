@@ -1,0 +1,977 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Representación Binaria de Datos en la Computadora</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Iconos de Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.10.5/font/bootstrap-icons.min.css">
+    <style>
+        :root {
+            --primary-color: #2c3e50;
+            --secondary-color: #3498db;
+            --accent-color: #e74c3c;
+            --bg-light: #f8f9fa;
+            --text-light: #f8f9fa;
+            --text-dark: #212529;
+        }
+        
+        .dark-mode {
+            --primary-color: #375a7f;
+            --secondary-color: #2c82c9;
+            --accent-color: #e74c3c;
+            --bg-light: #222;
+            --text-light: #f8f9fa;
+            --text-dark: #ddd;
+        }
+        
+        body {
+            background-color: var(--bg-light);
+            color: var(--text-dark);
+            transition: all 0.3s ease;
+        }
+        
+        .hero-section {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 4rem 0;
+        }
+        
+        .concept-card {
+            transition: transform 0.3s ease;
+            margin-bottom: 1rem;
+            height: 100%;
+            border-left: 4px solid var(--secondary-color);
+        }
+        
+        .concept-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .binary-bit {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            line-height: 40px;
+            text-align: center;
+            margin: 3px;
+            font-weight: bold;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .bit-0 {
+            background-color: #e74c3c;
+            color: white;
+        }
+        
+        .bit-1 {
+            background-color: #2ecc71;
+            color: white;
+        }
+        
+        .section-heading {
+            border-bottom: 2px solid var(--secondary-color);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        
+        #modeToggle {
+            cursor: pointer;
+        }
+        
+        .top-button {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            display: none;
+        }
+        
+        /* Diagrama de ALU con CSS */
+        .alu-diagram {
+            position: relative;
+            width: 100%;
+            height: 300px;
+            margin: 20px 0;
+        }
+        
+        .alu-box {
+            position: absolute;
+            width: 200px;
+            height: 120px;
+            background-color: var(--secondary-color);
+            color: white;
+            text-align: center;
+            line-height: 120px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 10px;
+        }
+        
+        .alu-input {
+            position: absolute;
+            width: 150px;
+            height: 50px;
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            border-radius: 5px;
+        }
+        
+        .input-1 {
+            left: 20%;
+            top: 20%;
+        }
+        
+        .input-2 {
+            left: 20%;
+            bottom: 20%;
+        }
+        
+        .alu-output {
+            position: absolute;
+            width: 150px;
+            height: 50px;
+            background-color: var(--accent-color);
+            color: white;
+            text-align: center;
+            line-height: 50px;
+            right: 20%;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 5px;
+        }
+        
+        .alu-arrow {
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+        }
+        
+        .arrow-input-1 {
+            border-left: 15px solid var(--primary-color);
+            right: 45%;
+            top: 25%;
+        }
+        
+        .arrow-input-2 {
+            border-left: 15px solid var(--primary-color);
+            right: 45%;
+            bottom: 25%;
+        }
+        
+        .arrow-output {
+            border-left: 15px solid var(--secondary-color);
+            right: 25%;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+        
+        /* Animación para bits */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse {
+            animation: pulse 1s infinite;
+        }
+        
+        .code-example {
+            border-left: 4px solid var(--secondary-color);
+            background-color: rgba(0,0,0,0.05);
+            font-family: monospace;
+        }
+        
+        .dark-mode .code-example {
+            background-color: rgba(255,255,255,0.1);
+        }
+    </style>
+</head>
+<body>
+    <!-- Barra de navegación -->
+    <nav class="navbar navbar-expand-lg navbar-dark sticky-top" style="background-color: var(--primary-color);">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="bi bi-cpu"></i> ArquiComp
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#teoria">Teoría</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#ejemplos">Ejemplos</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#hardware">Hardware</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#practica">Práctica</a>
+                    </li>
+                </ul>
+                <span id="modeToggle" class="text-light">
+                    <i class="bi bi-moon-fill"></i>
+                </span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Sección Hero -->
+    <header class="hero-section">
+        <div class="container text-center">
+            <h1 class="display-4 fw-bold">Representación Binaria de Datos en la Computadora</h1>
+            <p class="lead">El lenguaje fundamental que hace posible toda la tecnología digital moderna</p>
+            <div class="mt-4">
+                <div class="d-flex justify-content-center">
+                    <div class="binary-bit bit-1">1</div>
+                    <div class="binary-bit bit-0">0</div>
+                    <div class="binary-bit bit-1">1</div>
+                    <div class="binary-bit bit-0">0</div>
+                    <div class="binary-bit bit-1">1</div>
+                    <div class="binary-bit bit-0">0</div>
+                    <div class="binary-bit bit-1">1</div>
+                    <div class="binary-bit bit-0">0</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sección de Teoría -->
+    <section id="teoria" class="py-5">
+        <div class="container">
+            <h2 class="section-heading text-center">Fundamentos del Sistema Binario</h2>
+            
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card concept-card shadow-sm h-100">
+                        <div class="card-body">
+                            <h3 class="card-title"><i class="bi bi-lightbulb"></i> ¿Qué es el Sistema Binario?</h3>
+                            <p class="card-text">
+                                El sistema binario es un sistema de numeración que utiliza únicamente dos símbolos o dígitos: 
+                                <span class="bit-1 binary-bit">1</span> y <span class="bit-0 binary-bit">0</span>. 
+                                A diferencia del sistema decimal (base 10) que usamos cotidianamente, el sistema binario opera en base 2.
+                            </p>
+                            <p>
+                                Cada posición en un número binario representa una potencia de 2, comenzando desde 2<sup>0</sup> (1) en la posición más a la derecha, 
+                                luego 2<sup>1</sup> (2), 2<sup>2</sup> (4), 2<sup>3</sup> (8), y así sucesivamente hacia la izquierda.
+                            </p>
+                            <p>
+                                Por ejemplo, el número binario 1011 equivale a:
+                            </p>
+                            <div class="code-example p-3">
+                                1 × 2<sup>3</sup> + 0 × 2<sup>2</sup> + 1 × 2<sup>1</sup> + 1 × 2<sup>0</sup> = 8 + 0 + 2 + 1 = 11
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card concept-card shadow-sm h-100">
+                        <div class="card-body">
+                            <h3 class="card-title"><i class="bi bi-cpu"></i> ¿Por qué se usa en computación?</h3>
+                            <p class="card-text">
+                                Las computadoras utilizan el sistema binario por razones fundamentalmente prácticas:
+                            </p>
+                            <ul>
+                                <li>
+                                    <strong>Física electrónica:</strong> Los componentes electrónicos como transistores funcionan mejor en dos estados estables: 
+                                    encendido (1) y apagado (0), que se representan mediante la presencia o ausencia de voltaje eléctrico.
+                                </li>
+                                <li>
+                                    <strong>Fiabilidad:</strong> Con sólo dos estados posibles, la distinción entre ellos es clara, reduciendo errores en la transmisión y procesamiento.
+                                </li>
+                                <li>
+                                    <strong>Simplicidad:</strong> La lógica binaria permite implementar operaciones matemáticas y lógicas complejas utilizando componentes simples a través del álgebra booleana.
+                                </li>
+                                <li>
+                                    <strong>Escalabilidad:</strong> El sistema binario permite construir sistemas digitales de cualquier complejidad a partir de elementos binarios básicos.
+                                </li>
+                            </ul>
+                            <p>
+                                Esta elección ha definido la arquitectura fundamental de toda la computación moderna.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="card concept-card shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title"><i class="bi bi-arrow-left-right"></i> Comparación de Sistemas Numéricos</h3>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Decimal (Base 10)</th>
+                                            <th>Binario (Base 2)</th>
+                                            <th>Hexadecimal (Base 16)</th>
+                                            <th>Características</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>0</td>
+                                            <td>0000</td>
+                                            <td>0</td>
+                                            <td>Valor mínimo representable en un nibble (4 bits)</td>
+                                        </tr>
+                                        <tr>
+                                            <td>10</td>
+                                            <td>1010</td>
+                                            <td>A</td>
+                                            <td>Los sistemas hexadecimales usan A-F para valores 10-15</td>
+                                        </tr>
+                                        <tr>
+                                            <td>15</td>
+                                            <td>1111</td>
+                                            <td>F</td>
+                                            <td>Valor máximo representable en un nibble</td>
+                                        </tr>
+                                        <tr>
+                                            <td>16</td>
+                                            <td>10000</td>
+                                            <td>10</td>
+                                            <td>Requiere 5 bits en binario, 2 dígitos en hexadecimal</td>
+                                        </tr>
+                                        <tr>
+                                            <td>255</td>
+                                            <td>11111111</td>
+                                            <td>FF</td>
+                                            <td>Valor máximo en un byte (8 bits)</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <p class="mt-3">
+                                El sistema hexadecimal (base 16) se utiliza frecuentemente en computación como una forma más compacta de representar datos binarios. 
+                                Cada dígito hexadecimal representa exactamente cuatro bits (un nibble), lo que facilita la lectura de grandes secuencias binarias.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-12">
+                    <div class="card concept-card shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title"><i class="bi bi-motherboard"></i> Relación con la Electrónica Digital</h3>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <p>
+                                        Los transistores son los componentes fundamentales que posibilitan el procesamiento binario en computación. Un transistor actúa esencialmente como un interruptor que puede estar en uno de dos estados:
+                                    </p>
+                                    <ul>
+                                        <li><strong>Estado "ON" (1):</strong> Permite el flujo de corriente eléctrica</li>
+                                        <li><strong>Estado "OFF" (0):</strong> Bloquea el flujo de corriente eléctrica</li>
+                                    </ul>
+                                    <p>
+                                        Estos estados binarios son la base para implementar las operaciones lógicas fundamentales: AND, OR, NOT, NAND, NOR y XOR. Estas operaciones, a su vez, permiten construir circuitos cada vez más complejos como sumadores, multiplexores, unidades aritmético-lógicas y, finalmente, microprocesadores completos.
+                                    </p>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card bg-light">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Operaciones Lógicas Básicas</h5>
+                                            <div class="table-responsive">
+                                                <table class="table table-sm">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>A</th>
+                                                            <th>B</th>
+                                                            <th>AND</th>
+                                                            <th>OR</th>
+                                                            <th>XOR</th>
+                                                            <th>NOT A</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td>0</td>
+                                                            <td>0</td>
+                                                            <td>0</td>
+                                                            <td>0</td>
+                                                            <td>0</td>
+                                                            <td>1</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>0</td>
+                                                            <td>1</td>
+                                                            <td>0</td>
+                                                            <td>1</td>
+                                                            <td>1</td>
+                                                            <td>1</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>0</td>
+                                                            <td>0</td>
+                                                            <td>1</td>
+                                                            <td>1</td>
+                                                            <td>0</td>
+                                                        </tr>
+                                                        <tr>
+                                                            <td>1</td>
+                                                            <td>1</td>
+                                                            <td>1</td>
+                                                            <td>1</td>
+                                                            <td>0</td>
+                                                            <td>0</td>
+                                                        </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                            <p class="mt-2">
+                                                Estas operaciones lógicas son los "bloques de construcción" fundamentales de todo el procesamiento digital.
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Ejemplos Prácticos -->
+    <section id="ejemplos" class="py-5 bg-light">
+        <div class="container">
+            <h2 class="section-heading text-center">Ejemplos Prácticos</h2>
+            
+            <div class="row">
+                <div class="col-md-12 mb-4">
+                    <div class="card concept-card shadow-sm">
+                        <div class="card-body">
+                            <h3 class="card-title"><i class="bi bi-arrow-repeat"></i> Conversión Decimal a Binario</h3>
+                            
+                            <p>Para convertir un número decimal a binario, se divide repetidamente el número entre 2, anotando el resto en cada paso. La secuencia de restos, leída de abajo hacia arriba, forma el número binario.</p>
+                            
+                            <div class="row align-items-center">
+                                <div class="col-md-6">
+                                    <h5>Ejemplo: Convertir 42 (decimal) a binario</h5>
+                                    <div class="code-example p-3">
+                                        42 ÷ 2 = 21 con resto 0<br>
+                                        21 ÷ 2 = 10 con resto 1<br>
+                                        10 ÷ 2 = 5 con resto 0<br>
+                                        5 ÷ 2 = 2 con resto 1<br>
+                                        2 ÷ 2 = 1 con resto 0<br>
+                                        1 ÷ 2 = 0 con resto 1<br><br>
+                                        → Leyendo los restos de abajo hacia arriba: 101010
+                                    </div>
+                                    <p class="mt-3">Por lo tanto, 42 en decimal = 101010 en binario.</p>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card">
+                                        <div class="card-body">
+                                            <h5 class="card-title">Verificación:</h5>
+                                            <div class="code-example p-3">
+                                                1 × 2<sup>5</sup> + 0 × 2<sup>4</sup> + 1 × 2<sup>3</sup> + 0 × 2<sup>2</sup> + 1 × 2<sup>1</sup> + 0 × 2<sup>0</sup><br><br>
+                                                = 32 + 0 + 8 + 0 + 2 + 0<br>
+                                                = 42
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <h4>Conversión de Binario a Decimal</h4>
+                                <p>
+                                    Para convertir de binario a decimal, multiplica cada dígito binario por su valor posicional correspondiente (potencia de 2) y suma todos los resultados.
+                                </p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <h5>Ejemplo: Convertir 1101 (binario) a decimal</h5>
+                                        <div class="code-example p-3">
+                                            1 × 2<sup>3</sup> + 1 × 2<sup>2</sup> + 0 × 2<sup>1</sup> + 1 × 2<sup>0</sup><br><br>
+                                            = 8 + 4 + 0 + 1<br>
+                                            = 13
+                                        </div>
+                                        <p class="mt-3">Por lo tanto, 1101 en binario = 13 en decimal.</p>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <table class="table table-bordered">
+                                            <thead>
+                                                <tr>
+                                                    <th>Posición</th>
+                                                    <th>2<sup>3</sup></th>
+                                                    <th>2<sup>2</sup></th>
+                                                    <th>2<sup>1</sup></th>
+                                                    <th>2<sup>0</sup></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                <tr>
+                                                    <td>Valor</td>
+                                                    <td>8</td>
+                                                    <td>4</td>
+                                                    <td>2</td>
+                                                    <td>1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Bit</td>
+                                                    <td>1</td>
+                                                    <td>1</td>
+                                                    <td>0</td>
+                                                    <td>1</td>
+                                                </tr>
+                                                <tr>
+                                                    <td>Resultado</td>
+                                                    <td>8</td>
+                                                    <td>4</td>
+                                                    <td>0</td>
+                                                    <td>1</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card concept-card shadow-sm h-100">
+                        <div class="card-body">
+                            <h3 class="card-title"><i class="bi bi-font"></i> Representación de Caracteres</h3>
+                            <p>
+                                Los caracteres en la computadora se representan mediante códigos numéricos que luego se almacenan en forma binaria. Los dos estándares principales son:
+                            </p>
+                            
+                            <h5>ASCII (American Standard Code for Information Interchange)</h5>
+                            <p>
+                                Es un sistema de codificación de 7 bits que puede representar 128 caracteres diferentes, incluyendo letras mayúsculas y minúsculas, dígitos, signos de puntuación y caracteres de control.
+                            </p>
+                            
+                            <div class="table-responsive">
+                                <table class="table table-sm table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Carácter</th>
+                                            <th>Decimal</th>
+                                            <th>Binario</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>A</td>
+                                            <td>65</td>
+                                            <td>1000001</td>
+                                        </tr>
+                                        <tr>
+                                            <td>a</td>
+                                            <td>97</td>
+                                            <td>1100001</td>
+                                        </tr>
+                                        <tr>
+                                            <td>1</td>
+                                            <td>49</td>
+                                            <td>0110001</td>
+                                        </tr>
+                                        <tr>
+                                            <td>!</td>
+                                            <td>33</td>
+                                            <td>0100001</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <h5 class="mt-3">Unicode</h5>
+                            <p>
+                                Es una extensión de ASCII que puede representar prácticamente todos los caracteres de todos los sistemas de escritura del mundo. La codificación UTF-8 (que es compatible con ASCII) es ahora el estándar de facto para la web.
+                            </p>
+                            <p>
+                                Por ejemplo, el emoji "😀" se representa en Unicode como U+1F600, que en binario es 11111011000000000.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6 mb-4">
+                    <div class="card concept-card shadow-sm h-100">
+                        <div class="card-body">
+                            <h3 class="card-title"><i class="bi bi-calculator"></i> Números en Punto Flotante</h3>
+                            <p>
+                                Los números decimales se representan en las computadoras mediante el estándar IEEE 754, que utiliza una forma de notación científica binaria.
+                            </p>
+                            
+                            <h5>Estándar IEEE 754 (32 bits - precisión simple)</h5>
+                            <div class="d-flex mb-3">
+                                <div class="p-2 bg-primary text-white text-center" style="width: 10%;">Signo<br>(1 bit)</div>
+                                <div class="p-2 bg-success text-white text-center" style="width: 30%;">Exponente<br>(8 bits)</div>
+                                <div class="p-2 bg-danger text-white text-center" style="width: 60%;">Mantisa<br>(23 bits)</div>
+                            </div>
+                            
+                            <p>La fórmula para representar un número en punto flotante es:</p>
+                            <div class="code-example p-3">
+                                (-1)<sup>signo</sup> × 1.mantisa × 2<sup>exponente-127</sup>
+                            </div>
+                            
+                            <h5 class="mt-3">Ejemplo: Representar 10.5 en IEEE 754</h5>
+                            <ol>
+                                <li>Convertir a binario: 10.5 = 1010.1</li>
+                                <li>Normalizar: 1.0101 × 2<sup>3</sup></li>
+                                <li>Signo: 0 (positivo)</li>
+                                <li>Exponente: 3 + 127 = 130 (10000010 en binario)</li>
+                                <li>Mantisa: 0101 (seguido de 19 ceros)</li>
+                            </ol>
+                            
+                            <div class="d-flex">
+                                <div class="p-2 bg-primary text-white text-center" style="width: 10%;">0</div>
+                                <div class="p-2 bg-success text-white text-center" style="width: 30%;">10000010</div>
+                                <div class="p-2 bg-danger text-white text-center" style="width: 60%;">01010000000000000000000</div>
+                            </div>
+                            
+                            <p class="mt-3">Esta representación permite almacenar un amplio rango de números con precisión variable.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección de Aplicaciones en Hardware -->
+<section id="hardware" class="py-5">
+    <div class="container">
+        <h2 class="section-heading text-center">Aplicaciones en Hardware</h2>
+        
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card concept-card shadow-sm h-100">
+                    <div class="card-body">
+                        <h3 class="card-title"><i class="bi bi-memory"></i> Almacenamiento de Datos</h3>
+                        <h5>Memoria RAM (Acceso Aleatorio)</h5>
+                        <p>
+                            La memoria RAM almacena datos de forma temporal mientras la computadora está encendida. Cada celda de memoria tiene una dirección única y puede almacenar un valor binario (típicamente un byte o 8 bits).
+                        </p>
+                        <p>
+                            Físicamente, cada bit se implementa con un condensador y un transistor. El condensador almacena una carga eléctrica que representa un 1, o la ausencia de carga que representa un 0.
+                        </p>
+                        
+                        <h5 class="mt-3">Almacenamiento Secundario (HDD/SSD)</h5>
+                        <p>
+                            <strong>Discos Duros (HDD):</strong> Almacenan datos como patrones magnéticos en discos giratorios. Cada área magnetizada en un sentido representa un 1, y en el sentido opuesto un 0.
+                        </p>
+                        <p>
+                            <strong>Unidades de Estado Sólido (SSD):</strong> Utilizan celdas de memoria flash NAND, donde cada celda puede mantener una carga eléctrica que representa múltiples bits (tecnología MLC/TLC/QLC).
+                        </p>
+                        
+                        <div class="card bg-light mt-3">
+                            <div class="card-body">
+                                <h5 class="card-title">¿Sabías que?</h5>
+                                <p class="card-text">
+                                    Un SSD moderno puede almacenar hasta 4 bits por celda (tecnología QLC), lo que significa que cada celda puede representar 16 valores diferentes (2⁴).
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card concept-card shadow-sm h-100">
+                    <div class="card-body">
+                        <h3 class="card-title"><i class="bi bi-cpu"></i> Procesamiento en la CPU</h3>
+                        <p>
+                            La Unidad Central de Procesamiento (CPU) manipula datos binarios siguiendo instrucciones binarias. Este proceso incluye:
+                        </p>
+                        
+                        <h5>Ciclo de Instrucción</h5>
+                        <ol>
+                            <li><strong>Búsqueda (Fetch):</strong> La CPU obtiene la instrucción de la memoria.</li>
+                            <li><strong>Decodificación (Decode):</strong> Interpreta qué operación realizar.</li>
+                            <li><strong>Ejecución (Execute):</strong> Realiza la operación utilizando la Unidad Aritmético-Lógica (ALU).</li>
+                            <li><strong>Almacenamiento (Store):</strong> Guarda el resultado en memoria o un registro.</li>
+                        </ol>
+                        
+                        <h5 class="mt-3">Operaciones Matemáticas</h5>
+                        <p>
+                            Incluso las operaciones matemáticas más complejas se descomponen en operaciones binarias básicas:
+                        </p>
+                        <ul>
+                            <li>La suma usa circuitos sumadores que procesan cada posición de bit.</li>
+                            <li>La multiplicación se implementa como sumas repetidas o mediante algoritmos más sofisticados.</li>
+                            <li>La división utiliza restas repetidas o algoritmos de desplazamiento.</li>
+                        </ul>
+                        
+                        <div class="alu-diagram mt-4">
+                            <div class="alu-input input-1">Operando A</div>
+                            <div class="alu-input input-2">Operando B</div>
+                            <div class="alu-box">ALU</div>
+                            <div class="alu-output">Resultado</div>
+                            <div class="alu-arrow arrow-input-1"></div>
+                            <div class="alu-arrow arrow-input-2"></div>
+                            <div class="alu-arrow arrow-output"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-12">
+                <div class="card concept-card shadow-sm">
+                    <div class="card-body">
+                        <h3 class="card-title"><i class="bi bi-diagram-3"></i> Arquitectura Binaria</h3>
+                        
+                        <div class="row">
+                            <div class="col-md-4">
+                                <h5><i class="bi bi-archive"></i> Registros</h5>
+                                <p>
+                                    Los registros son pequeñas unidades de memoria de alta velocidad dentro de la CPU. Almacenan temporalmente datos binarios para:
+                                </p>
+                                <ul>
+                                    <li>Datos en procesamiento inmediato</li>
+                                    <li>Direcciones de memoria</li>
+                                    <li>Resultados intermedios de operaciones</li>
+                                    <li>Estado del programa (flags)</li>
+                                </ul>
+                                <p>
+                                    Un registro típico puede almacenar 32 o 64 bits en los procesadores modernos.
+                                </p>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <h5><i class="bi bi-arrows-expand"></i> Buses</h5>
+                                <p>
+                                    Los buses son conjuntos de líneas paralelas que transportan datos binarios entre los componentes de la computadora:
+                                </p>
+                                <ul>
+                                    <li><strong>Bus de datos:</strong> Transporta los datos entre CPU y otros componentes</li>
+                                    <li><strong>Bus de direcciones:</strong> Envía direcciones de memoria</li>
+                                    <li><strong>Bus de control:</strong> Envía señales de control y sincronización</li>
+                                </ul>
+                                <p>
+                                    Cada línea del bus transporta un solo bit (0 o 1) en paralelo con las demás líneas.
+                                </p>
+                            </div>
+                            
+                            <div class="col-md-4">
+                                <h5><i class="bi bi-calculator"></i> Unidad Aritmético-Lógica (ALU)</h5>
+                                <p>
+                                    La ALU es el "corazón computacional" de la CPU que realiza operaciones sobre datos binarios:
+                                </p>
+                                <ul>
+                                    <li><strong>Operaciones aritméticas:</strong> Suma, resta, incremento</li>
+                                    <li><strong>Operaciones lógicas:</strong> AND, OR, XOR, NOT</li>
+                                    <li><strong>Operaciones de desplazamiento:</strong> Rotación y desplazamiento de bits</li>
+                                </ul>
+                                <p>
+                                    Todas estas operaciones se implementan mediante circuitos combinacionales que manipulan bits individuales.
+                                </p>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info mt-4">
+                            <h5><i class="bi bi-lightbulb"></i> Concepto Clave</h5>
+                            <p class="mb-0">
+                                La maravilla de la computación moderna es que toda su complejidad emerge de simples operaciones binarias combinadas en estructuras cada vez más sofisticadas. Desde los transistores individuales hasta las aplicaciones complejas, todo se reduce a 0s y 1s.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Sección Didáctica y Práctica -->
+<section id="practica" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="section-heading text-center">Didáctica y Práctica</h2>
+        
+        <div class="row g-4">
+            <div class="col-md-6">
+                <div class="card concept-card shadow-sm h-100">
+                    <div class="card-body">
+                        <h3 class="card-title"><i class="bi bi-calculator-fill"></i> Conversor de Sistemas Numéricos</h3>
+                        <p>Utiliza esta calculadora para convertir entre sistemas numéricos:</p>
+                        
+                        <div class="form-group mb-3">
+                            <label for="numberInput" class="form-label">Número a convertir:</label>
+                            <input type="text" class="form-control" id="numberInput" placeholder="Ingresa un número">
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col">
+                                <label class="form-label">Sistema de origen:</label>
+                                <select class="form-select" id="fromSystem">
+                                    <option value="10">Decimal</option>
+                                    <option value="2">Binario</option>
+                                    <option value="16">Hexadecimal</option>
+                                    <option value="8">Octal</option>
+                                </select>
+                            </div>
+                            <div class="col">
+                                <label class="form-label">Convertir a:</label>
+                                <select class="form-select" id="toSystem">
+                                    <option value="2">Binario</option>
+                                    <option value="10">Decimal</option>
+                                    <option value="16">Hexadecimal</option>
+                                    <option value="8">Octal</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <button id="convertBtn" class="btn btn-primary w-100 mb-3">Convertir</button>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Resultado:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" id="resultOutput" readonly>
+                                <button class="btn btn-outline-secondary" type="button" id="copyBtn" title="Copiar al portapapeles">
+                                    <i class="bi bi-clipboard"></i>
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="alert alert-info" id="conversionSteps" style="display: none;">
+                            <h5>Pasos de la conversión:</h5>
+                            <div id="stepsContent"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="card concept-card shadow-sm h-100">
+                    <div class="card-header">
+                        <h3 class="card-title mb-0"><i class="bi bi-question-circle"></i> Cuestionario Interactivo</h3>
+                    </div>
+                    <div class="card-body" id="quizContainer">
+                        <div id="quizProgress" class="progress mb-3" style="height: 5px;">
+                            <div class="progress-bar" role="progressbar" style="width: 0%"></div>
+                        </div>
+                        
+                        <div id="questionContainer">
+                            <h5 id="questionText">¿Listo para poner a prueba tus conocimientos sobre sistemas binarios?</h5>
+                            
+                            <div id="answerOptions" class="mt-3">
+                                <button class="btn btn-outline-primary w-100 mb-3" id="startQuizBtn">Comenzar Cuestionario</button>
+                            </div>
+                        </div>
+                        
+                        <div id="resultContainer" style="display: none;">
+                            <h4>Resultados</h4>
+                            <p id="scoreText"></p>
+                            <div class="progress mb-3" style="height: 20px;">
+                                <div id="scoreBar" class="progress-bar" role="progressbar"></div>
+                            </div>
+                            <button id="restartQuizBtn" class="btn btn-primary mt-2">Intentar Nuevamente</button>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="card concept-card shadow-sm mt-4">
+                    <div class="card-body">
+                        <h3 class="card-title"><i class="bi bi-arrows-move"></i> Flujo de Datos en Hardware</h3>
+                        <p>Este diagrama muestra cómo los datos binarios fluyen a través de los componentes principales de una computadora:</p>
+                        
+                        <div class="data-flow-diagram">
+                            <svg width="100%" height="300" xmlns="http://www.w3.org/2000/svg">
+                                <defs>
+                                    <marker id="arrowhead" markerWidth="10" markerHeight="7" refX="10" refY="3.5" orient="auto">
+                                        <polygon points="0 0, 10 3.5, 0 7" />
+                                    </marker>
+                                </defs>
+                                
+                                <!-- Memoria RAM -->
+                                <rect x="10%" y="20" width="20%" height="60" rx="5" ry="5" fill="#3498db" />
+                                <text x="20%" y="55" text-anchor="middle" fill="white">Memoria RAM</text>
+                                
+                                <!-- CPU -->
+                                <rect x="40%" y="120" width="20%" height="60" rx="5" ry="5" fill="#e74c3c" />
+                                <text x="50%" y="155" text-anchor="middle" fill="white">CPU</text>
+                                
+                                <!-- Almacenamiento -->
+                                <rect x="70%" y="20" width="20%" height="60" rx="5" ry="5" fill="#2ecc71" />
+                                <text x="80%" y="55" text-anchor="middle" fill="white">Almacenamiento</text>
+                                
+                                <!-- ALU (dentro de CPU) -->
+                                <rect x="42%" y="220" width="16%" height="40" rx="5" ry="5" fill="#f39c12" />
+                                <text x="50%" y="245" text-anchor="middle" fill="white">ALU</text>
+                                
+                                <!-- Líneas de conexión -->
+                                <line x1="30%" y1="50" x2="40%" y2="120" stroke="black" stroke-width="2" marker-end="url(#arrowhead)" />
+                                <line x1="60%" y1="120" x2="70%" y2="50" stroke="black" stroke-width="2" marker-end="url(#arrowhead)" />
+                                <line x1="70%" y1="70" x2="30%" y2="70" stroke="black" stroke-width="2" marker-end="url(#arrowhead)" />
+                                <line x1="50%" y1="180" x2="50%" y2="220" stroke="black" stroke-width="2" marker-end="url(#arrowhead)" />
+                                
+                                <!-- Flujo de Bits -->
+                                <text x="35%" y="90" text-anchor="middle" fill="#333">10110101</text>
+                                <text x="65%" y="90" text-anchor="middle" fill="#333">01001110</text>
+                                <text x="50%" y="210" text-anchor="middle" fill="#333">10010111</text>
+                            </svg>
+                        </div>
+                        
+                        <div class="mt-3">
+                            <p>En este diagrama simplificado:</p>
+                            <ul>
+                                <li>Los datos binarios se cargan de la memoria RAM a la CPU para su procesamiento.</li>
+                                <li>La ALU dentro de la CPU realiza operaciones sobre estos datos binarios.</li>
+                                <li>Los resultados se almacenan de nuevo en la memoria o en un dispositivo de almacenamiento.</li>
+                                <li>Todo el proceso está controlado por secuencias de instrucciones binarias.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Diseño y Usabilidad ya está incluido en la página, principalmente a través de estilos y la funcionalidad de modo oscuro -->
+
+<!-- Pie de Página -->
+<footer class="py-4 text-light" style="background-color: var(--primary-color);">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h5>Recursos Adicionales</h5>
+                <ul class="list-unstyled">
+                    <li><a href="#" class="text-light">Tanenbaum, A. S. (2016). Structured Computer Organization.</a></li>
+                    <li><a href="#" class="text-light">Patterson, D. A., & Hennessy, J. L. (2017). Computer Organization and Design: The Hardware/Software Interface.</a></li>
+                    <li><a href="#" class="text-light">Stallings, W. (2019). Computer Organization and Architecture.</a></li>
+                    <li><a href="#" class="text-light">Null, L., & Lobur, J. (2014). The Essentials of Computer Organization and Architecture.</a></li>
+                </ul>
+            </div>
+            <div class="col-md-6">
+                <h5>Herramientas en Línea</h5>
+                <ul class="list-unstyled">
+                    <li><a href="https://www.rapidtables.com/convert/number/binary-converter.html" class="text-light" target="_blank">RapidTables: Convertidor Numérico</a></li>
+                    <li><a href="https://www.binaryhexconverter.com/" class="text-light" target="_blank">Binary Hex Converter: Herramienta completa para conversiones</a></li>
+                    <li><a href="https://www.cs.umd.edu/class/sum2003/cmsc311/Notes/" class="text-light" target="_blank">UMD: Apuntes sobre Organización de Computadoras</a></li>
+                    <li><a href="https://www.khanacademy.org/computing/computer-science" class="text-light" target="_blank">Khan Academy: Cursos gratuitos de Ciencias de la Computación</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <hr class="mt-4 mb-4" style="border-color: rgba(255,255,255,0.1);">
+        
+        <div class="row">
+            <div class="col-md-6">
+                <p class="mb-0">© 2025 ArquiComp. Material educativo para uso académico.</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <a href="#" class="text-light me-3"><i class="bi bi-github"></i></a>
+                <a href="#" class="text-light me-3"><i class="bi bi-twitter"></i></a>
+                <a href="#" class="text-light"><i class="bi bi-book"></i></a>
+            </div>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
