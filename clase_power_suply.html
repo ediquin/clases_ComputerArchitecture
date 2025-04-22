@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <style>
+       /* Estilos Generales */
+body {
+    font-family: 'Roboto', sans-serif; /* Usa la fuente de Google Fonts si se enlazó */
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+    color: #333;
+}
+
+header {
+    background: #0056b3; /* Azul oscuro para el encabezado */
+    color: #fff;
+    padding: 1rem 0;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+h1, h2, h3 {
+    color: #003366; /* Un azul más oscuro para los títulos */
+}
+
+nav {
+    background: #007bff; /* Azul para la barra de navegación */
+    color: #fff;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+nav ul {
+    padding: 0;
+    list-style: none;
+    display: flex; /* Mostrar elementos en línea */
+    justify-content: center; /* Centrar los elementos de navegación */
+    flex-wrap: wrap; /* Permitir que los elementos se envuelvan en pantallas pequeñas */
+}
+
+nav ul li {
+    margin: 0 15px; /* Espacio entre elementos de navegación */
+}
+
+nav ul li a {
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 0;
+    display: block; /* Hacer que el área clickable sea más grande */
+    transition: color 0.3s ease; /* Transición suave al pasar el ratón */
+}
+
+nav ul li a:hover {
+    color: #e2e2e2; /* Color más claro al pasar el ratón */
+}
+
+main {
+    max-width: 1000px; /* Ancho máximo del contenido principal */
+    margin: 0 auto; /* Centrar el contenido principal */
+    padding: 0 20px; /* Espacio interior en los lados */
+}
+
+section {
+    background: #fff;
+    padding: 20px;
+    margin-bottom: 20px;
+    border-radius: 8px; /* Bordes redondeados para las secciones */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra suave */
+}
+
+section h2 {
+    border-bottom: 2px solid #007bff; /* Subrayado para los títulos de sección */
+    padding-bottom: 10px;
+    margin-bottom: 20px;
+}
+
+ul, ol {
+    margin-bottom: 15px;
+}
+
+ul li, ol li {
+    margin-bottom: 10px;
+}
+
+/* Estilos para los placeholders de imágenes */
+.placeholder-imagen {
+    width: 80%; /* Ancho por defecto */
+    height: 200px; /* Altura por defecto */
+    background-color: #e9e9e9; /* Color de fondo del placeholder */
+    margin: 20px auto; /* Centrar el placeholder */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px dashed #ccc; /* Borde punteado para indicar placeholder */
+    text-align: center;
+    color: #666;
+    font-style: italic;
+    padding: 10px;
+    box-sizing: border-box; /* Incluir padding y borde en el tamaño total */
+}
+
+.placeholder-imagen.full-width {
+    width: 100%; /* Placeholder de ancho completo */
+}
+
+.placeholder-imagen.small {
+    width: 150px; /* Placeholder más pequeño */
+    height: 150px;
+}
+
+.placeholder-text {
+    margin: 0;
+}
+
+footer {
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 20px;
+    background: #003366; /* Azul oscuro para el pie de página */
+    color: #fff;
+    font-size: 0.9rem;
+}
+
+/* Estilos Responsivos */
+@media (max-width: 768px) {
+    nav ul {
+        flex-direction: column; /* Apilar elementos en pantallas pequeñas */
+        align-items: center; /* Centrar elementos apilados */
+    }
+
+    nav ul li {
+        margin: 10px 0; /* Más espacio vertical entre elementos apilados */
+    }
+
+    main {
+        padding: 0 10px; /* Menos espacio interior en los lados en móviles */
+    }
+
+    .placeholder-imagen {
+        width: 95%; /* Usar más ancho en móviles */
+        height: 150px; /* Ajustar altura */
+    }
+
+    .placeholder-imagen.small {
+         width: 100px; /* Ajustar tamaño pequeño en móviles */
+         height: 100px;
+     }
+}
+
+@media (max-width: 480px) {
+    h1 {
+        font-size: 1.8rem; /* Reducir tamaño de título principal */
+    }
+
+    h2 {
+        font-size: 1.5rem; /* Reducir tamaño de títulos de sección */
+    }
+
+    section {
+        padding: 15px; /* Menos padding en secciones */
+    }
+} 
+    </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Fuente de Alimentación (PSU) en la Arquitectura de Computadoras</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <header>
+        <h1>La Fuente de Alimentación (PSU) en la Arquitectura de Computadoras</h1>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#introduccion">Introducción</a></li>
+            <li><a href="#conversion-energia">Conversión de Energía</a></li>
+            <li><a href="#etapas">Etapas del Proceso</a></li>
+            <li><a href="#importancia">Importancia y Características Clave</a></li>
+            </ul>
+    </nav>
+
+    <main>
+        <section id="introduccion">
+            <h2>Introducción</h2>
+            <p>
+                La Fuente de Alimentación (PSU - Power Supply Unit) es un componente fundamental en cualquier sistema de computación. Su función principal es... [Continuar con la explicación de la función esencial].
+                Es un componente vital porque... [Continuar con la importancia para el funcionamiento del sistema].
+            </p>
+        </section>
+
+        <section id="conversion-energia">
+            <h2>Función Principal y Tipo de Conversión de Energía</h2>
+            <p>
+                La PSU se encarga de transformar la corriente alterna (AC) que proviene del suministro eléctrico de la pared en corriente continua (DC), que es el tipo de energía que utilizan los componentes internos de la computadora.
+            </p>
+            <p>
+                Proporciona diferentes voltajes de DC para alimentar distintos componentes:
+            </p>
+            <ul>
+                <li><strong>+12V:</strong> Usado principalmente por la CPU, tarjeta gráfica y motores de unidades de disco. Es el riel más crítico en sistemas modernos.</li>
+                <li><strong>+5V:</strong> Utilizado por la placa base (en parte), puertos USB, unidades de estado sólido (SSD) y algunos discos duros.</li>
+                <li><strong>+3.3V:</strong> Alimentación para la memoria RAM, chipsets de la placa base y ranuras de expansión (como M.2).</li>
+                <li><strong>-12V y +5Vsb (Standby):</strong> Otros voltajes con funciones específicas (ej. -12V para algunos puertos seriales antiguos, +5Vsb para mantener cierta funcionalidad cuando la PC está "apagada" pero enchufada).</li>
+            </ul>
+            <div class="placeholder-imagen">
+                <img src="imagenes/conversion-ac-dc.jpg" alt="Diagrama de conversión de corriente alterna a continua" width="100%">
+            </div>
+        </section>
+
+        <section id="etapas">
+            <h2>Etapas Principales del Proceso de Conversión</h2>
+            <p>
+                El proceso de conversión de AC a DC dentro de una PSU moderna (fuente conmutada) generalmente involucra varias etapas:
+            </p>
+            <ol>
+                <li>
+                    <h3>Filtrado y Rectificación Inicial</h3>
+                    <p>La corriente AC de entrada pasa por filtros para eliminar ruido e interferencias. Luego, un circuito rectificador convierte la AC en una corriente pulsante unidireccional (DC pulsante).</p>
+                     <div class="placeholder-imagen">
+                         [Diagrama simple de rectificación]
+                        <p class="placeholder-text">Diagrama: Rectificación AC a DC pulsante.</p>
+                    </div>
+                </li>
+                <li>
+                    <h3>Conmutación/Inversión (Etapa Principal de las Fuentes Conmutadas)</h3>
+                    <p>En las fuentes conmutadas, la DC pulsante se convierte en una AC de alta frecuencia mediante transistores de conmutación. Esto permite el uso de transformadores más pequeños y eficientes.</p>
+                     <div class="placeholder-imagen">
+                        [Diagrama simple de etapa de conmutación]
+                       <p class="placeholder-text">Diagrama: Proceso de conmutación.</p>
+                   </div>
+                </li>
+                 <li>
+                    <h3>Transformación</h3>
+                    <p>La AC de alta frecuencia pasa por un transformador que reduce el voltaje a los niveles requeridos para los componentes (+12V, +5V, +3.3V, etc.).</p>
+                     <div class="placeholder-imagen">
+                        [Diagrama simple de transformación]
+                       <p class="placeholder-text">Diagrama: Transformador y reducción de voltaje.</p>
+                   </div>
+                </li>
+                 <li>
+                    <h3>Rectificación y Filtrado de Salida</h3>
+                    <p>La AC de bajo voltaje se rectifica nuevamente para convertirla en DC. Luego, grandes capacitores y bobinas filtran y suavizan la corriente para obtener voltajes DC estables y limpios.</p>
+                     <div class="placeholder-imagen">
+                        [Diagrama simple de rectificación y filtrado final]
+                       <p class="placeholder-text">Diagrama: Rectificación y filtrado de salida.</p>
+                   </div>
+                </li>
+                 <li>
+                    <h3>Regulación y Control</h3>
+                    <p>Circuitos de control monitorizan los voltajes de salida y ajustan la etapa de conmutación para mantenerlos estables bajo diferentes cargas, compensando variaciones.</p>
+                </li>
+                 <li>
+                    <h3>Salida y Conectores</h3>
+                    <p>La energía DC regulada se distribuye a través de diferentes cables y conectores para alimentar la placa base, tarjetas de expansión, unidades de almacenamiento, etc.</p>
+                     <div class="placeholder-imagen">
+                        [Imágenes de diferentes tipos de conectores (ATX, EPS, PCIe, SATA, Molex)]
+                       <p class="placeholder-text">Imágenes: Tipos de conectores de PSU.</p>
+                   </div>
+                </li>
+            </ol>
+             <div class="placeholder-imagen full-width">
+                [Imagen de una fuente de alimentación abierta mostrando componentes clave]
+               <p class="placeholder-text">Imagen: Componentes internos de una PSU.</p>
+           </div>
+        </section>
+
+        <section id="importancia">
+            <h2>Importancia y Características Clave</h2>
+            <p>
+                Al seleccionar una PSU, varios factores son cruciales para garantizar la estabilidad y longevidad del sistema:
+            </p>
+            <ul>
+                <li>
+                    <h3>Eficiencia</h3>
+                    <p>La eficiencia indica qué porcentaje de la energía de entrada se convierte efectivamente en energía utilizable por los componentes. Las PSU con certificación 80 Plus (Standard, Bronze, Silver, Gold, Platinum, Titanium) garantizan una alta eficiencia, reduciendo el desperdicio de energía y el calor generado.</p>
+                     <div class="placeholder-imagen small">
+                        [Logo de certificación 80 Plus]
+                       <p class="placeholder-text">Imagen: Logo 80 Plus.</p>
+                   </div>
+                </li>
+                <li>
+                    <h3>Potencia (Wattage)</h3>
+                    <p>La potencia total (medida en vatios - W) que una PSU puede entregar es fundamental. Debe ser suficiente para cubrir el consumo máximo de todos los componentes, especialmente la CPU y la tarjeta gráfica. Se recomienda un margen de seguridad.</p>
+                </li>
+                 <li>
+                    <h3>Conectividad</h3>
+                    <p>Asegúrate de que la PSU tenga los conectores necesarios y en cantidad suficiente para tus componentes (ATX para placa base, EPS para CPU, PCIe para tarjeta gráfica, SATA para discos, Molex para periféricos antiguos o ventiladores).</p>
+                      <div class="placeholder-imagen">
+                        [Imágenes de diferentes tipos de conectores]
+                       <p class="placeholder-text">Imágenes: Tipos de conectores de PSU.</p>
+                   </div>
+                </li>
+                 <li>
+                    <h3>Modularidad</h3>
+                    <p>Las PSU pueden ser no modulares (todos los cables son fijos), semi-modulares (cables principales fijos, otros desmontables) o modulares (todos los cables desmontables). Las modulares facilitan la gestión de cables y mejoran el flujo de aire, pero suelen ser más caras.</p>
+                </li>
+                 <li>
+                    <h3>Protecciones</h3>
+                    <p>Las buenas PSU incluyen circuitos de protección contra: Sobrevoltaje (OVP), Bajo Voltaje (UVP), Sobrecorriente (OCP), Cortocircuito (SCP), Sobretemperatura (OTP) y Sobrecarga de Potencia (OPP/OLP). Estas protecciones evitan daños a los componentes de la PC en caso de fallos eléctricos.</p>
+                </li>
+            </ul>
+        </section>
+
+        </main>
+
+    <footer>
+        <p>&copy; 2023 Nombre del Curso / Tu Nombre o Institución</p>
+    </footer>
+
+     <script>
+        // Script simple para resaltar la navegación actual (opcional)
+        document.querySelectorAll('nav ul li a').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+                // Opcional: Lógica para añadir una clase 'active' al enlace de navegación
+                // document.querySelectorAll('nav ul li a').forEach(link => link.classList.remove('active'));
+                // this.classList.add('active');
+            });
+        });
+
+        // Script para menú responsivo si añades uno (requeriría más HTML/CSS)
+        // Ejemplo: const toggleButton = document.querySelector('.menu-toggle');
+        // const navbar = document.querySelector('nav ul');
+        // toggleButton.addEventListener('click', () => {
+        //     navbar.classList.toggle('active');
+        // });
+    </script>
+</body>
+</html>
