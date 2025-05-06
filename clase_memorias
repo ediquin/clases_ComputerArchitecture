@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memorias de Computadora</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Estilos propios -->
+    <style>
+        .edq-header {
+            background-color: #2c3e50;
+            color: white;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .edq-section {
+            padding: 2rem 0;
+        }
+        
+        .edq-card {
+            border-radius: 10px;
+            box-shadow: 0 6px 10px rgba(0,0,0,0.1);
+            transition: transform 0.3s;
+            height: 100%;
+            border: none;
+        }
+        
+        .edq-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .edq-card-header {
+            background-color: #3498db;
+            color: white;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+            padding: 0.75rem 1.25rem;
+        }
+        
+        .edq-ram {
+            background-color: #2ecc71;
+        }
+        
+        .edq-rom {
+            background-color: #e74c3c;
+        }
+        
+        .edq-storage {
+            background-color: #f39c12;
+        }
+        
+        .edq-other {
+            background-color: #9b59b6;
+        }
+        
+        .edq-footer {
+            background-color: #2c3e50;
+            color: white;
+            padding: 1.5rem 0;
+            margin-top: 2rem;
+        }
+        
+        .edq-comparison-table {
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .edq-comparison-table thead {
+            background-color: #34495e;
+            color: white;
+        }
+        
+        .edq-img-container {
+            overflow: hidden;
+            border-radius: 10px;
+            margin-bottom: 1rem;
+        }
+        
+        .edq-img-container img {
+            transition: transform 0.3s;
+            width: 100%;
+            height: auto;
+        }
+        
+        .edq-img-container:hover img {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="edq-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <h1 class="display-4">Memorias</h1>
+                    <p class="lead">Componentes esenciales para el almacenamiento y procesamiento de datos</p>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Introducción -->
+    <section class="edq-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="text-center mb-4">Introducción a las Memorias de Computadora</h2>
+                    <p class="lead">Las memorias son componentes fundamentales en cualquier sistema informático, ya que permiten almacenar datos temporales y permanentes necesarios para el funcionamiento del sistema.</p>
+                    <p>En este material exploraremos los diferentes tipos de memoria que podemos encontrar en una computadora moderna, entendiendo sus características, funciones y diferencias principales. Desde las veloces pero volátiles memorias RAM, hasta los dispositivos de almacenamiento permanente como discos duros y unidades de estado sólido.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Clasificación Principal -->
+    <section class="edq-section bg-light">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2>Clasificación Principal de Memorias</h2>
+                    <p>Las memorias se clasifican principalmente en dos grandes categorías:</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Memoria Primaria -->
+                <div class="col-md-6">
+                    <div class="card edq-card">
+                        <div class="card-body">
+                            <h3 class="card-title">Memoria Primaria</h3>
+                            <p class="card-text">Es la memoria que utiliza directamente el procesador para leer instrucciones y datos. Son memorias de acceso rápido pero generalmente con menor capacidad.</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">RAM (Random Access Memory)</li>
+                                <li class="list-group-item">ROM (Read Only Memory)</li>
+                                <li class="list-group-item">Caché</li>
+                                <li class="list-group-item">Registros del CPU</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Memoria Secundaria -->
+                <div class="col-md-6">
+                    <div class="card edq-card">
+                        <div class="card-body">
+                            <h3 class="card-title">Memoria Secundaria</h3>
+                            <p class="card-text">Es la memoria de almacenamiento permanente, donde se guardan datos e instrucciones aunque el sistema se apague. Tienen mayor capacidad pero menor velocidad.</p>
+                            <ul class="list-group list-group-flush">
+                                <li class="list-group-item">Discos Duros (HDD)</li>
+                                <li class="list-group-item">Unidades de Estado Sólido (SSD)</li>
+                                <li class="list-group-item">Unidades Flash (USB)</li>
+                                <li class="list-group-item">Tarjetas de memoria</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Memoria RAM -->
+    <section class="edq-section">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2>Memoria RAM (Random Access Memory)</h2>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="edq-img-container">
+                        <img src="/api/placeholder/800/400" alt="Módulos de Memoria RAM" class="img-fluid">
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="card edq-card">
+                        <div class="card-header edq-card-header edq-ram">
+                            <h3 class="mb-0">Características de la RAM</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>La memoria RAM es un tipo de memoria <strong>volátil</strong> y de acceso aleatorio que permite la lectura y escritura de datos. Sus principales características son:</p>
+                            <ul>
+                                <li><strong>Volátil:</strong> Pierde su contenido cuando se apaga el equipo</li>
+                                <li><strong>Alta velocidad:</strong> Acceso rápido a los datos (ns)</li>
+                                <li><strong>Acceso directo:</strong> El procesador puede acceder a cualquier posición de memoria directamente</li>
+                                <li><strong>Capacidad media:</strong> Desde 4GB hasta 128GB en equipos modernos</li>
+                                <li><strong>Temporal:</strong> Almacena datos mientras se ejecutan los programas</li>
+                            </ul>
+                            <div class="alert alert-info">
+                                <h4>Tipos principales de RAM</h4>
+                                <p>Actualmente los más comunes son DDR4 y DDR5, con velocidades cada vez mayores y menor consumo energético.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Memoria ROM -->
+    <section class="edq-section bg-light">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2>Memoria ROM (Read Only Memory)</h2>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="card edq-card">
+                        <div class="card-header edq-card-header edq-rom">
+                            <h3 class="mb-0">Características de la ROM</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>La memoria ROM es un tipo de memoria <strong>no volátil</strong> que almacena datos que no cambian frecuentemente. Sus principales características son:</p>
+                            <ul>
+                                <li><strong>No volátil:</strong> Conserva los datos aunque se apague el equipo</li>
+                                <li><strong>Solo lectura:</strong> Los datos son grabados durante su fabricación o mediante procesos especiales</li>
+                                <li><strong>Velocidad media:</strong> Más lenta que la RAM pero más rápida que el almacenamiento secundario</li>
+                                <li><strong>Capacidad baja:</strong> Normalmente pocos MB</li>
+                                <li><strong>Permanente:</strong> Contiene instrucciones fundamentales como el BIOS/UEFI</li>
+                            </ul>
+                            <div class="alert alert-warning">
+                                <h4>Tipos de ROM</h4>
+                                <p>PROM (Programable), EPROM (Borrable), EEPROM (Eléctricamente borrable) y Flash ROM (usada en BIOS/UEFI modernas)</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-6">
+                    <div class="edq-img-container">
+                        <img src="/api/placeholder/800/400" alt="Chip de ROM en placa base" class="img-fluid">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Almacenamiento Secundario -->
+    <section class="edq-section">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2>Almacenamiento Secundario</h2>
+                    <p>HDD y SSD - Almacenamiento permanente de datos</p>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <!-- HDD -->
+                <div class="col-lg-6">
+                    <div class="card edq-card">
+                        <div class="card-header edq-card-header edq-storage">
+                            <h3 class="mb-0">Disco Duro (HDD)</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="edq-img-container">
+                                <img src="/api/placeholder/400/250" alt="Disco duro (HDD)" class="img-fluid">
+                            </div>
+                            <p><strong>¿Qué tipo de memoria es?</strong> Memoria secundaria, no volátil, de tipo ROM (ya que retiene la información sin alimentación eléctrica).</p>
+                            <h4>Características:</h4>
+                            <ul>
+                                <li>Almacena datos mediante magnetismo en discos giratorios</li>
+                                <li>Mayor capacidad a menor precio (1TB-20TB accesibles)</li>
+                                <li>Velocidad relativamente baja (100-200 MB/s)</li>
+                                <li>Sensible a golpes y vibraciones por sus partes móviles</li>
+                                <li>Mayor consumo energético</li>
+                                <li>Adecuado para almacenamiento de grandes volúmenes de datos</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- SSD -->
+                <div class="col-lg-6">
+                    <div class="card edq-card">
+                        <div class="card-header edq-card-header edq-storage">
+                            <h3 class="mb-0">Unidad de Estado Sólido (SSD)</h3>
+                        </div>
+                        <div class="card-body">
+                            <div class="edq-img-container">
+                                <img src="/api/placeholder/400/250" alt="Unidad de estado sólido (SSD)" class="img-fluid">
+                            </div>
+                            <p><strong>¿Qué tipo de memoria es?</strong> Memoria secundaria, no volátil, de tipo ROM (retiene la información sin electricidad), pero usa tecnología flash.</p>
+                            <h4>Características:</h4>
+                            <ul>
+                                <li>Almacena datos en chips de memoria flash</li>
+                                <li>Velocidades muy superiores (500-7000 MB/s)</li>
+                                <li>Sin partes móviles, mayor resistencia a golpes</li>
+                                <li>Menor consumo energético</li>
+                                <li>Menor emisión de calor y ruido</li>
+                                <li>Costo mayor por gigabyte que los HDD</li>
+                                <li>Ciclos de escritura limitados (aunque en unidades modernas es menos relevante)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Otros Tipos de Memoria -->
+    <section class="edq-section bg-light">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2>Otros Tipos de Memoria</h2>
+                </div>
+            </div>
+            
+            <div class="row g-4">
+                <!-- Memoria Caché -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card edq-card">
+                        <div class="card-header edq-card-header edq-other">
+                            <h3 class="mb-0">Memoria Caché</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Memoria ultrarrápida situada entre el procesador y la RAM.</p>
+                            <ul>
+                                <li><strong>Niveles:</strong> L1, L2, L3</li>
+                                <li><strong>Velocidad:</strong> Extremadamente rápida</li>
+                                <li><strong>Capacidad:</strong> Muy pequeña (KB a MB)</li>
+                                <li><strong>Función:</strong> Acelerar acceso a datos frecuentes</li>
+                                <li><strong>Tipo:</strong> Memoria volátil (RAM estática)</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Registros del CPU -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card edq-card">
+                        <div class="card-header edq-card-header edq-other">
+                            <h3 class="mb-0">Registros del CPU</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Memoria interna del procesador, la más rápida del sistema.</p>
+                            <ul>
+                                <li><strong>Velocidad:</strong> La más alta del sistema</li>
+                                <li><strong>Capacidad:</strong> Extremadamente pequeña (bits o bytes)</li>
+                                <li><strong>Función:</strong> Operaciones directas del procesador</li>
+                                <li><strong>Tipo:</strong> Memoria volátil integrada en el CPU</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Memoria Virtual -->
+                <div class="col-md-6 col-lg-4">
+                    <div class="card edq-card">
+                        <div class="card-header edq-card-header edq-other">
+                            <h3 class="mb-0">Memoria Virtual</h3>
+                        </div>
+                        <div class="card-body">
+                            <p>Técnica que utiliza espacio en disco para simular memoria RAM adicional.</p>
+                            <ul>
+                                <li><strong>Función:</strong> Extender la memoria RAM disponible</li>
+                                <li><strong>Velocidad:</strong> Mucho más lenta que la RAM real</li>
+                                <li><strong>Archivo:</strong> Archivo de paginación o swap</li>
+                                <li><strong>Tipo:</strong> Concepto lógico, no hardware físico</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Tabla Comparativa -->
+    <section class="edq-section">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2>Comparativa de Memorias</h2>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-12">
+                    <div class="table-responsive">
+                        <table class="table table-striped table-bordered edq-comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Velocidad</th>
+                                    <th>Volatilidad</th>
+                                    <th>Capacidad</th>
+                                    <th>Uso Principal</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Registros CPU</td>
+                                    <td>Extremadamente Alta</td>
+                                    <td>Volátil</td>
+                                    <td>Bytes</td>
+                                    <td>Operaciones CPU</td>
+                                </tr>
+                                <tr>
+                                    <td>Caché</td>
+                                    <td>Muy Alta</td>
+                                    <td>Volátil</td>
+                                    <td>KB - MB</td>
+                                    <td>Datos frecuentes</td>
+                                </tr>
+                                <tr>
+                                    <td>RAM</td>
+                                    <td>Alta</td>
+                                    <td>Volátil</td>
+                                    <td>GB</td>
+                                    <td>Programas en ejecución</td>
+                                </tr>
+                                <tr>
+                                    <td>ROM</td>
+                                    <td>Media</td>
+                                    <td>No Volátil</td>
+                                    <td>MB</td>
+                                    <td>Instrucciones básicas (BIOS)</td>
+                                </tr>
+                                <tr>
+                                    <td>SSD</td>
+                                    <td>Media-Alta</td>
+                                    <td>No Volátil</td>
+                                    <td>GB - TB</td>
+                                    <td>Almacenamiento permanente rápido</td>
+                                </tr>
+                                <tr>
+                                    <td>HDD</td>
+                                    <td>Baja</td>
+                                    <td>No Volátil</td>
+                                    <td>TB</td>
+                                    <td>Almacenamiento masivo</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Jerarquía de Memoria -->
+    <section class="edq-section bg-light">
+        <div class="container">
+            <div class="row mb-4">
+                <div class="col-12 text-center">
+                    <h2>Jerarquía de Memoria</h2>
+                </div>
+            </div>
+            
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="card edq-card">
+                        <div class="card-body">
+                            <p class="lead">Las memorias se organizan en una jerarquía basada en velocidad, capacidad y costo:</p>
+                            
+                            <div class="d-flex align-items-center justify-content-center mb-4">
+                                <div class="text-center">
+                                    <div class="p-3 bg-danger text-white rounded mb-1">Registros CPU</div>
+                                    <div class="p-3 bg-warning text-dark rounded mb-1">Caché L1/L2/L3</div>
+                                    <div class="p-3 bg-primary text-white rounded mb-1">Memoria RAM</div>
+                                    <div class="p-3 bg-success text-white rounded mb-1">SSD/HDD (Almacenamiento)</div>
+                                    <div class="p-3 bg-secondary text-white rounded">Almacenamiento Externo</div>
+                                </div>
+                                <div class="ms-4">
+                                    <div class="text-end mb-3">
+                                        <p class="mb-0">↑ Mayor velocidad</p>
+                                        <p class="mb-0">↑ Menor capacidad</p>
+                                        <p class="mb-0">↑ Mayor costo por byte</p>
+                                    </div>
+                                    <div class="text-end">
+                                        <p class="mb-0">↓ Menor velocidad</p>
+                                        <p class="mb-0">↓ Mayor capacidad</p>
+                                        <p class="mb-0">↓ Menor costo por byte</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <p>Esta jerarquía permite balancear el rendimiento y el costo, ubicando los datos más frecuentemente usados en las memorias más rápidas y los datos menos utilizados en las memorias más lentas pero de mayor capacidad.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Conclusión -->
+    <section class="edq-section">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <h2 class="text-center mb-4">Conclusiones</h2>
+                    <div class="card edq-card">
+                        <div class="card-body">
+                            <p class="lead">Las memorias son componentes esenciales en cualquier sistema informático y se complementan entre sí:</p>
+                            <ul>
+                                <li>La <strong>RAM</strong> proporciona almacenamiento temporal rápido para programas en ejecución.</li>
+                                <li>La <strong>ROM</strong> almacena instrucciones críticas de arranque que deben persistir sin energía.</li>
+                                <li>Los <strong>HDD</strong> ofrecen gran capacidad a bajo costo para almacenamiento permanente.</li>
+                                <li>Los <strong>SSD</strong> brindan velocidad cercana a la RAM con capacidades de almacenamiento permanente.</li>
+                                <li>Las <strong>memorias caché</strong> aceleran el acceso a datos frecuentes.</li>
+                            </ul>
+                            <p>Entender las características de cada tipo de memoria permite optimizar el rendimiento de un sistema según sus necesidades específicas.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="edq-footer">
+        <div class="container">
+            <div class="row">
+                <div class="col-12 text-center">
+                    <p>© 2025 - Clase sobre Memorias de Computadora</p>
+                    <p class="small">Desarrollado con fines educativos</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap Bundle with Popper -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.2/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
