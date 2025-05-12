@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jerarquía de Memoria - Material Didáctico</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome para iconos -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #3498db;
+            --secondary-color: #2ecc71;
+            --tertiary-color: #9b59b6;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+        }
+        
+        body {
+            position: relative;
+            padding-top: 56px;
+            color: #333;
+            background-color: #f8f9fa;
+        }
+        
+        .section-title {
+            color: var(--dark-color);
+            border-bottom: 3px solid var(--primary-color);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+        
+        .topic-header {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 20px;
+            border-radius: 5px 5px 0 0;
+            margin-bottom: 0;
+        }
+        
+        .topic-content {
+            background-color: white;
+            padding: 25px;
+            border-radius: 0 0 5px 5px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        
+        .concept-card {
+            border-left: 4px solid var(--primary-color);
+            background-color: rgba(52, 152, 219, 0.1);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+        }
+        
+        .concept-card.green {
+            border-left-color: var(--secondary-color);
+            background-color: rgba(46, 204, 113, 0.1);
+        }
+        
+        .concept-card.purple {
+            border-left-color: var(--tertiary-color);
+            background-color: rgba(155, 89, 182, 0.1);
+        }
+        
+        .diagram {
+            background-color: var(--light-color);
+            border-radius: 5px;
+            padding: 20px;
+            margin: 20px 0;
+            text-align: center;
+        }
+        
+        .memory-diagram {
+            font-family: monospace;
+            white-space: pre;
+            line-height: 1.2;
+            font-size: 14px;
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px auto;
+            display: inline-block;
+            text-align: left;
+        }
+        
+        .table-comparison {
+            margin: 20px 0;
+        }
+        
+        .note-box {
+            background-color: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .example-box {
+            background-color: #d1ecf1;
+            border-left: 4px solid #17a2b8;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .sidebar {
+            position: sticky;
+            top: 80px;
+        }
+        
+        .nav-link {
+            color: var(--dark-color);
+        }
+        
+        .nav-link.active {
+            background-color: var(--primary-color) !important;
+            color: white !important;
+        }
+        
+        footer {
+            background-color: var(--dark-color);
+            color: white;
+            padding: 30px 0;
+            margin-top: 50px;
+        }
+        
+        .table-striped tbody tr:nth-of-type(odd) {
+            background-color: rgba(0,0,0,.03);
+        }
+        
+        #toTopBtn {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 99;
+            display: none;
+        }
+        
+        .cache-diagram {
+            width: 100%;
+            max-width: 600px;
+            margin: 20px auto;
+            display: block;
+        }
+        
+        code {
+            background-color: #f8f9fa;
+            padding: 2px 4px;
+            border-radius: 4px;
+            color: #e83e8c;
+        }
+        
+        @media (max-width: 768px) {
+            .sidebar {
+                position: static;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body data-bs-spy="scroll" data-bs-target="#navbar-example">
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">Arquitectura de Computadoras</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tema1">Tema 1: Jerarquía de Memoria</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#tema2">Tema 2: Tipos de Memoria</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Contenido principal -->
+    <div class="container py-5">
+        <header class="text-center mb-5">
+            <h1 class="display-4">Jerarquía de Memoria y Optimización de Sistemas</h1>
+            <p class="lead">Material didáctico para la enseñanza de arquitectura de memoria en computadoras</p>
+        </header>
+
+        <div class="row">
+            <!-- Sidebar de navegación -->
+            <div class="col-lg-3">
+                <div class="sidebar">
+                    <div class="list-group" id="navbar-example">
+                        <a class="list-group-item list-group-item-action" href="#tema1">Tema 1: Jerarquía de Memoria</a>
+                        <a class="list-group-item list-group-item-action ps-4" href="#introduccion">Introducción</a>
+                        <a class="list-group-item list-group-item-action ps-4" href="#niveles">Niveles de Memoria</a>
+                        <a class="list-group-item list-group-item-action ps-4" href="#relacion-factores">Relación entre Factores</a>
+                        <a class="list-group-item list-group-item-action ps-4" href="#analisis-diagramas">Análisis de Diagramas</a>
+                        <a class="list-group-item list-group-item-action" href="#tema2">Tema 2: Tipos de Memoria</a>
+                        <a class="list-group-item list-group-item-action ps-4" href="#memoria-principal">Memoria Principal</a>
+                        <a class="list-group-item list-group-item-action ps-4" href="#memorias-emergentes">Memorias Emergentes</a>
+                        <a class="list-group-item list-group-item-action ps-4" href="#comparacion-tecnica">Comparación Técnica</a>
+                        <a class="list-group-item list-group-item-action" href="#tema3">Tema 3: Caché y Memoria Virtual</a>
+                        <a class="list-group-item list-group-item-action ps-4" href="#funcionamiento-cache">Funcionamiento de Caché</a>
+                        <a class="list-group-item list-group-item-action ps-4" href="#politicas-reemplazo">Políticas de Reemplazo</a>
+                        <a class="list-group-item list-group-item-action ps-4" href="#memoria-virtual">Memoria Virtual</a>
+                        <a class="list-group-item list-group-item-action ps-4" href="#casos-uso">Casos de Uso</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Contenido principal -->
+            <div class="col-lg-9">
+                <!-- TEMA 1 -->
+                <section id="tema1">
+                    <div class="topic-header">
+                        <h2><i class="fas fa-layer-group me-2"></i> Tema 1: Jerarquía de Memoria y su Rol en el Desempeño del Sistema</h2>
+                    </div>
+                    <div class="topic-content">
+                        <section id="introduccion">
+                            <h3 class="section-title">Introducción a la Jerarquía de Memoria</h3>
+                            
+                            <p>La jerarquía de memoria es uno de los conceptos fundamentales que define la arquitectura moderna de computadoras. Esta jerarquía representa cómo se organizan los diferentes tipos de memoria en un sistema computacional para balancear tres factores críticos: velocidad, capacidad y costo.</p>
+                            
+                            <div class="concept-card">
+                                <h4><i class="fas fa-lightbulb me-2"></i>Concepto Clave</h4>
+                                <p>Imaginen la memoria de una computadora como una pirámide. En la cúspide tenemos memorias muy rápidas pero pequeñas y costosas, mientras que en la base encontramos memorias lentas pero de gran capacidad y económicas. Esta organización no es casual, sino que responde a una realidad tecnológica y económica: no podemos tener memorias que sean simultáneamente muy rápidas, de gran capacidad y económicas.</p>
+                            </div>
+
+                            <div class="example-box">
+                                <h5><i class="fas fa-flask me-2"></i>Analogía Ilustrativa</h5>
+                                <p>Podemos comparar la jerarquía de memoria con la organización de documentos en una oficina:</p>
+                                <ul>
+                                    <li><strong>Documentos sobre el escritorio</strong>: Como los registros del procesador, son inmediatamente accesibles pero limitados en cantidad.</li>
+                                    <li><strong>Archivadores cercanos</strong>: Similar a la memoria caché, permiten acceso rápido a documentos frecuentemente utilizados.</li>
+                                    <li><strong>Estantes de la oficina</strong>: Equivalentes a la memoria RAM, almacenan más documentos con acceso relativamente rápido.</li>
+                                    <li><strong>Almacén o bodega</strong>: Como el almacenamiento secundario, contiene gran cantidad de información pero requiere más tiempo para acceder.</li>
+                                </ul>
+                            </div>
+
+                            <p>Esta jerarquía de memoria permite a los sistemas computacionales aprovechar el principio de localidad, tanto temporal como espacial, para optimizar el rendimiento global del sistema.</p>
+                        </section>
+
+                        <section id="niveles">
+                            <h3 class="section-title">Niveles de la Jerarquía de Memoria</h3>
+                            
+                            <p>Vamos a explorar cada nivel de esta pirámide, desde la cúspide hasta la base:</p>
+
+                            <h4>1. Registros del Procesador</h4>
+                            <p>Los registros constituyen el nivel más alto de la jerarquía de memoria. Están integrados directamente en el procesador y almacenan datos temporales que el CPU está procesando inmediatamente.</p>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card mb-4">
+                                        <div class="card-header bg-primary text-white">
+                                            Características de los Registros
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item"><strong>Velocidad de acceso</strong>: menos de 1 nanosegundo (típicamente 0.2-0.5 ns)</li>
+                                            <li class="list-group-item"><strong>Capacidad</strong>: extremadamente limitada (generalmente entre 16 y 256 registros)</li>
+                                            <li class="list-group-item"><strong>Tecnología</strong>: circuitos flip-flop basados en transistores</li>
+                                            <li class="list-group-item"><strong>Costo por byte</strong>: el más elevado de toda la jerarquía</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card mb-4">
+                                        <div class="card-header bg-primary text-white">
+                                            Función de los Registros
+                                        </div>
+                                        <div class="card-body">
+                                            <p>Los registros son esenciales para la ejecución de instrucciones, ya que almacenan:</p>
+                                            <ul>
+                                                <li>Operandos para instrucciones</li>
+                                                <li>Resultados intermedios de cálculos</li>
+                                                <li>Direcciones de memoria</li>
+                                                <li>Datos de control del procesador</li>
+                                                <li>Estado del sistema</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4>2. Memoria Caché</h4>
+                            <p>La memoria caché actúa como un puente entre los registros ultrarrápidos del procesador y la memoria principal más lenta. Se basa en el <strong>principio de localidad</strong>, que establece que:</p>
+                            
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><i class="fas fa-clock me-2"></i>Localidad Temporal</h5>
+                                            <p class="card-text">Si un dato se accede, es probable que se acceda nuevamente en un futuro cercano.</p>
+                                            <p class="card-text text-muted"><em>Ejemplo: Variables en un bucle, instrucciones en una función recursiva</em></p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card h-100">
+                                        <div class="card-body">
+                                            <h5 class="card-title"><i class="fas fa-map-marker-alt me-2"></i>Localidad Espacial</h5>
+                                            <p class="card-text">Si se accede a un dato, es probable que pronto se acceda a datos cercanos en memoria.</p>
+                                            <p class="card-text text-muted"><em>Ejemplo: Elementos contiguos en un array, instrucciones secuenciales</em></p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <p>La memoria caché se organiza en varios niveles:</p>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead class="table-primary">
+                                        <tr>
+                                            <th>Nivel de Caché</th>
+                                            <th>Ubicación</th>
+                                            <th>Velocidad de acceso</th>
+                                            <th>Capacidad típica</th>
+                                            <th>Características</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Caché L1</strong></td>
+                                            <td>Integrada en el núcleo del procesador</td>
+                                            <td>1-3 nanosegundos</td>
+                                            <td>32KB - 64KB por núcleo</td>
+                                            <td>Dividida en caché de instrucciones y caché de datos</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Caché L2</strong></td>
+                                            <td>Dedicada a cada núcleo o compartida entre algunos</td>
+                                            <td>3-10 nanosegundos</td>
+                                            <td>256KB - 1MB por núcleo</td>
+                                            <td>Almacena datos e instrucciones que no caben en L1</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Caché L3</strong></td>
+                                            <td>Compartida entre todos los núcleos</td>
+                                            <td>10-20 nanosegundos</td>
+                                            <td>4MB - 50MB en total</td>
+                                            <td>Último recurso antes de acceder a la memoria principal</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="note-box">
+                                <h5><i class="fas fa-sticky-note me-2"></i>Nota importante</h5>
+                                <p>El rendimiento de la caché se mide principalmente por su <strong>tasa de aciertos</strong> (hit rate). Un acierto significa que el dato solicitado se encontró en la caché, mientras que un fallo (miss) implica que debe buscarse en un nivel inferior de memoria, lo que introduce latencia.</p>
+                                <p>Una tasa de aciertos ideal para la caché L1 debería ser superior al 95%, lo que significa que el 95% de las solicitudes del procesador encuentran los datos necesarios en el nivel más cercano de memoria.</p>
+                            </div>
+
+                            <h4>3. Memoria Principal (RAM)</h4>
+                            <p>La memoria RAM (Random Access Memory) constituye el almacenamiento principal temporal del sistema.</p>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="card mb-4">
+                                        <div class="card-header bg-success text-white">
+                                            Características de la RAM
+                                        </div>
+                                        <ul class="list-group list-group-flush">
+                                            <li class="list-group-item"><strong>Velocidad de acceso</strong>: 50-100 nanosegundos</li>
+                                            <li class="list-group-item"><strong>Capacidad</strong>: varios gigabytes (8GB-128GB en sistemas actuales)</li>
+                                            <li class="list-group-item"><strong>Tecnología predominante</strong>: DRAM y sus variantes</li>
+                                            <li class="list-group-item"><strong>Volatilidad</strong>: pierde su contenido cuando se apaga el sistema</li>
+                                            <li class="list-group-item"><strong>Conexión</strong>: directa al bus de memoria del sistema</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card mb-4">
+                                        <div class="card-header bg-success text-white">
+                                            Contenido de la RAM
+                                        </div>
+                                        <div class="card-body">
+                                            <p>La RAM almacena:</p>
+                                            <ul>
+                                                <li>El código ejecutable de los programas en ejecución</li>
+                                                <li>Las estructuras de datos utilizadas por estos programas</li>
+                                                <li>La caché de disco para acelerar operaciones de E/S</li>
+                                                <li>Buffers para dispositivos y comunicaciones</li>
+                                                <li>Datos temporales del sistema operativo</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4>4. Almacenamiento Secundario</h4>
+                            <p>El almacenamiento secundario proporciona memoria no volátil y de gran capacidad.</p>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="card h-100">
+                                        <div class="card-header bg-info">
+                                            <h5 class="card-title mb-0">Unidades de Estado Sólido (SSD)</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <ul>
+                                                <li><strong>Velocidad de acceso</strong>: 20-100 microsegundos</li>
+                                                <li><strong>Tecnología</strong>: memoria flash NAND en su mayoría</li>
+                                                <li><strong>Ventajas</strong>: Sin partes móviles, menor latencia, resistente a impactos</li>
+                                                <li><strong>Desventajas</strong>: Mayor costo por GB, vida útil limitada por ciclos de escritura</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card h-100">
+                                        <div class="card-header bg-info">
+                                            <h5 class="card-title mb-0">Discos Duros (HDD)</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <ul>
+                                                <li><strong>Velocidad de acceso</strong>: 5-10 milisegundos</li>
+                                                <li><strong>Tecnología</strong>: Discos magnéticos rotativos</li>
+                                                <li><strong>Ventajas</strong>: Mayor capacidad por unidad monetaria</li>
+                                                <li><strong>Desventajas</strong>: Componentes mecánicos que limitan velocidad, vulnerables a golpes</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <h4>5. Almacenamiento Terciario</h4>
+                            <p>Presente en algunos sistemas, incluye:</p>
+                            <ul>
+                                <li>Cintas magnéticas</li>
+                                <li>Sistemas ópticos (DVD, Blu-ray)</li>
+                                <li>Almacenamiento en red y en la nube</li>
+                                <li><strong>Velocidad</strong>: segundos a minutos para el acceso inicial</li>
+                                <li><strong>Uso principal</strong>: copias de seguridad y archivado a largo plazo</li>
+                            </ul>
+                        </section>
+
+                        <section id="relacion-factores">
+                            <h3 class="section-title">Relación entre Velocidad, Costo, Capacidad y Proximidad al Procesador</h3>
+                            
+                            <p>Esta jerarquía se rige por varias relaciones inversas fundamentales:</p>
+
+                            <div class="concept-card green">
+                                <h4><i class="fas fa-balance-scale me-2"></i>Relaciones Inversas</h4>
+                                <ol>
+                                    <li><strong>A mayor proximidad al procesador, mayor velocidad pero menor capacidad</strong>
+                                        <ul>
+                                            <li>Los registros están integrados en el procesador: velocidad máxima, capacidad mínima</li>
+                                            <li>El almacenamiento terciario está extremadamente alejado: velocidad mínima, capacidad máxima</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>A mayor velocidad de acceso, mayor costo por byte</strong>
+                                        <ul>
+                                            <li>La memoria caché L1 puede costar cientos de veces más por byte que la RAM</li>
+                                            <li>El almacenamiento en disco duro puede costar miles de veces menos por byte que la RAM</li>
+                                        </ul>
+                                    </li>
+                                    <li><strong>A mayor tamaño de memoria, mayor latencia media de acceso</strong>
+                                        <ul>
+                                            <li>Mayor complejidad en la lógica de direccionamiento</li>
+                                            <li>Mayor distancia física promedio a recorrer por las señales eléctricas</li>
+                                        </ul>
+                                    </li>
+                                </ol>
+                            </div>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped table-comparison">
+                                    <thead class="table-dark">
+                                        <tr>
+                                            <th>Nivel de Memoria</th>
+                                            <th>Velocidad Relativa</th>
+                                            <th>Capacidad Relativa</th>
+                                            <th>Costo Relativo</th>
+                                            <th>Volatilidad</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Registros</td>
+                                            <td>Extremadamente rápida (1x)</td>
+                                            <td>Extremadamente pequeña</td>
+                                            <td>Extremadamente alto</td>
+                                            <td>Volátil</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Caché L1</td>
+                                            <td>Muy rápida (3-5x)</td>
+                                            <td>Muy pequeña</td>
+                                            <td>Muy alto</td>
+                                            <td>Volátil</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Caché L2</td>
+                                            <td>Rápida (10-20x)</td>
+                                            <td>Pequeña</td>
+                                            <td>Alto</td>
+                                            <td>Volátil</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Caché L3</td>
+                                            <td>Moderada (20-50x)</td>
+                                            <td>Media-baja</td>
+                                            <td>Medio-alto</td>
+                                            <td>Volátil</td>
+                                        </tr>
+                                        <tr>
+                                            <td>RAM</td>
+                                            <td>Media (100-200x)</td>
+                                            <td>Media</td>
+                                            <td>Medio</td>
+                                            <td>Volátil</td>
+                                        </tr>
+                                        <tr>
+                                            <td>SSD</td>
+                                            <td>Lenta (100,000x)</td>
+                                            <td>Alta</td>
+                                            <td>Bajo-medio</td>
+                                            <td>No volátil</td>
+                                        </tr>
+                                        <tr>
+                                            <td>HDD</td>
+                                            <td>Muy lenta (1,000,000x)</td>
+                                            <td>Muy alta</td>
+                                            <td>Bajo</td>
+                                            <td>No volátil</td>
+                                        </tr>
+                                        <tr>
+                                            <td>Almacenamiento terciario</td>
+                                            <td>Extremadamente lenta (10,000,000x+)</td>
+                                            <td>Extremadamente alta</td>
+                                            <td>Muy bajo</td>
+                                            <td>No volátil</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            
+                            <p>Este balance entre factores contrapuestos resulta en una arquitectura de "pirámide" que optimiza el rendimiento global del sistema manteniendo los costos en niveles razonables.</p>
+                        </section>
+
+                        <section id="analisis-diagramas">
+                            <h3 class="section-title">Análisis de Diagramas Jerárquicos</h3>
+                            
+                            <p>Un diagrama típico de la jerarquía de memoria muestra una pirámide con características específicas para cada nivel:</p>
+
+                            <div class="diagram">
+                                <div class="memory-diagram">
+         ┌─────────┐
+         │Registros│ Velocidad: < 1 ns     Tamaño: < 1 KB
+         └─────────┘
+        ┌───────────┐
+        │  Caché L1  │ Velocidad: 1-3 ns     Tamaño: 32-64 KB/núcleo
+        └───────────┘
+       ┌─────────────┐
+       │   Caché L2   │ Velocidad: 3-10 ns    Tamaño: 256KB-1MB/núcleo
+       └─────────────┘
+      ┌───────────────┐
+      │    Caché L3    │ Velocidad: 10-20 ns   Tamaño: 4-50 MB
+      └───────────────┘
+     ┌─────────────────┐
+     │   Memoria RAM    │ Velocidad: 50-100 ns  Tamaño: 8-128 GB
+     └─────────────────┘
+    ┌───────────────────┐
+    │       SSD          │ Velocidad: 20-100 μs  Tamaño: 256GB-4TB
+    └───────────────────┘
+   ┌─────────────────────┐
+   │     Disco Duro       │ Velocidad: 5-10 ms    Tamaño: 1-20 TB
+   └─────────────────────┘
+  ┌───────────────────────┐
+  │ Almacenamiento Remoto  │ Velocidad: 10-1000 ms Tamaño: Petabytes
+  └───────────────────────┘
+                                </div>
+                            </div>
+
+                            <p>Al analizar estos diagramas jerárquicos de memoria, es crucial observar:</p>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="card h-100">
+                                        <div class="card-header bg-primary text-white">
+                                            <h5 class="card-title mb-0">Aspectos Cuantitativos</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <ol>
+                                                <li><strong>La razón de capacidad entre niveles adyacentes</strong>: Típicamente, cada nivel tiene 10-1000 veces la capacidad del nivel superior.</li>
+                                                <li><strong>La razón de latencia entre niveles adyacentes</strong>: Cada nivel es típicamente 5-100 veces más lento que el nivel superior.</li>
+                                                <li><strong>El ancho de banda disponible</strong>: Decrece significativamente conforme descendemos en la jerarquía.</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card h-100">
+                                        <div class="card-header bg-primary text-white">
+                                            <h5 class="card-title mb-0">Aspectos Tecnológicos</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <ol>
+                                                <li><strong>Las tecnologías físicas</strong>: Cada nivel utiliza tecnologías diferentes optimizadas para su función.</li>
+                                                <li><strong>Mecanismos de gestión</strong>: Desde hardware puro (registros) hasta sistemas híbridos hardware-software (memoria virtual).</li>
+                                                <li><strong>Velocidad de evolución</strong>: Las diferentes tecnologías evolucionan a ritmos distintos.</li>
+                                            </ol>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="concept-card purple">
+                                <h4><i class="fas fa-chart-bar me-2"></i>Métricas de Evaluación de la Jerarquía de Memoria</h4>
+                                <p>Para evaluar la eficacia de una jerarquía de memoria, consideramos:</p>
+                                <ul>
+                                    <li><strong>Tiempo medio de acceso a memoria (AMAT)</strong>: AMAT = Hit Time + (Miss Rate × Miss Penalty)</li>
+                                    <li><strong>Tasa de aciertos global</strong>: Porcentaje de accesos resueltos en niveles superiores</li>
+                                    <li><strong>Ancho de banda efectivo</strong>: Cantidad de datos transferidos por unidad de tiempo</li>
+                                    <li><strong>Costo total vs. rendimiento</strong>: Balance económico de la solución</li>
+                                </ul>
+                            </div>
+
+                            <div class="example-box">
+                                <h5><i class="fas fa-calculator me-2"></i>Ejemplo de Cálculo de AMAT</h5>
+                                <p>Supongamos un sistema con estas características:</p>
+                                <ul>
+                                    <li>Caché L1: Tiempo de acceso = 2 ns, Tasa de fallos = 5%</li>
+                                    <li>Caché L2: Tiempo de acceso = 8 ns, Tasa de fallos = 20%</li>
+                                    <li>Memoria RAM: Tiempo de acceso = 60 ns</li>
+                                </ul>
+                                <p>El AMAT se calcularía así:</p>
+                                <p>AMAT = 2 ns + 0.05 × (8 ns + 0.20 × 60 ns)</p>
+                                <p>AMAT = 2 ns + 0.05 × (8 ns + 12 ns)</p>
+                                <p>AMAT = 2 ns + 0.05 × 20 ns</p>
+                                <p>AMAT = 2 ns + 1 ns = 3 ns</p>
+                                <p>Este resultado de 3 nanosegundos representa el tiempo medio que tarda el sistema en acceder a memoria considerando toda la jerarquía.</p>
+                            </div>
+
+                            <div class="note-box">
+                                <h5><i class="fas fa-exclamation-triangle me-2"></i>Tendencias y Desafíos</h5>
+                                <p>Los diagramas de jerarquía de memoria nos revelan algunas tendencias importantes:</p>
+                                <ul>
+                                    <li>La <strong>brecha de velocidad</strong> entre procesador y memoria principal sigue aumentando</li>
+                                    <li>Las tecnologías de caché son cada vez más complejas para mitigar esta brecha</li>
+                                    <li>El número de niveles de caché ha aumentado con el tiempo</li>
+                                    <li>Las nuevas arquitecturas de memoria (como HBM) intentan reconfigurar aspectos de esta jerarquía tradicional</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <div class="mt-4 p-3 bg-light rounded">
+                            <h4>Competencias a desarrollar en este tema:</h4>
+                            <ul>
+                                <li>Comprender cómo la organización de la memoria afecta el rendimiento del sistema.</li>
+                                <li>Evaluar decisiones de diseño en arquitecturas de hardware.</li>
+                                <li>Analizar y optimizar sistemas basados en su jerarquía de memoria.</li>
+                                <li>Identificar cuellos de botella en el subsistema de memoria.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- TEMA 2 -->
+                <section id="tema2">
+                    <div class="topic-header">
+                        <h2><i class="fas fa-microchip me-2"></i> Tema 2: Tipos de Memoria y su Evolución Tecnológica</h2>
+                    </div>
+                    <div class="topic-content">
+                        <section id="memoria-principal">
+                            <h3 class="section-title">Memoria Principal: Tecnologías y Evolución</h3>
+                            
+                            <p>La memoria principal ha experimentado una evolución constante para satisfacer las crecientes demandas de rendimiento, capacidad y eficiencia energética en los sistemas computacionales modernos.</p>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead class="table-success">
+                                        <tr>
+                                            <th>Tecnología</th>
+                                            <th>Descripción</th>
+                                            <th>Características principales</th>
+                                            <th>Aplicaciones típicas</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>DRAM</strong><br>(Dynamic RAM)</td>
+                                            <td>Memoria basada en condensadores que requieren refresco periódico</td>
+                                            <td>
+                                                <ul>
+                                                    <li>Alta densidad</li>
+                                                    <li>Bajo costo por bit</li>
+                                                    <li>Requiere refresco constante</li>
+                                                    <li>Mayor consumo de energía</li>
+                                                </ul>
+                                            </td>
+                                            <td>Memoria principal en la mayoría de sistemas</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>SRAM</strong><br>(Static RAM)</td>
+                                            <td>Memoria basada en flip-flops que mantienen su estado sin refresco</td>
+                                            <td>
+                                                <ul>
+                                                    <li>Más rápida que DRAM</li>
+                                                    <li>No requiere refresco</li>
+                                                    <li>Menor densidad</li>
+                                                    <li>Mayor costo por bit</li>
+                                                </ul>
+                                            </td>
+                                            <td>Memoria caché, buffers internos del CPU</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>SDRAM</strong><br>(Synchronous DRAM)</td>
+                                            <td>DRAM sincronizada con el reloj del sistema</td>
+                                            <td>
+                                                <ul>
+                                                    <li>Sincronizada con el bus del sistema</li>
+                                                    <li>Mayor rendimiento que DRAM</li>
+                                                    <li>Capacidad de ráfaga</li>
+                                                </ul>
+                                            </td>
+                                            <td>Memoria principal en PCs de finales de los 90s</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>DDR SDRAM</strong><br>(Double Data Rate)</td>
+                                            <td>Transfiere datos en ambos flancos del reloj</td>
+                                            <td>
+                                                <ul>
+                                                    <li>Doble tasa de transferencia</li>
+                                                    <li>Evolución por generaciones (DDR1-DDR5)</li>
+                                                    <li>Incremento gradual de velocidad y eficiencia</li>
+                                                </ul>
+                                            </td>
+                                            <td>Memoria principal en la mayoría de sistemas modernos</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>LPDDR</strong><br>(Low Power DDR)</td>
+                                            <td>Versión de bajo consumo de la tecnología DDR</td>
+                                            <td>
+                                                <ul>
+                                                    <li>Optimizada para bajo consumo</li>
+                                                    <li>Menor voltaje de operación</li>
+                                                    <li>Modos de ahorro de energía avanzados</li>
+                                                </ul>
+                                            </td>
+                                            <td>Dispositivos móviles, tablets, laptops ultraligeras</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <h4>Evolución de las tecnologías DDR</h4>
+                            <p>La familia DDR (Double Data Rate) representa la evolución más significativa en memoria principal en las últimas dos décadas:</p>
+
+                            <div class="diagram">
+                                <div class="table-responsive">
+                                    <table class="table table-bordered table-sm">
+                                        <thead class="table-dark">
+                                            <tr>
+                                                <th>Generación</th>
+                                                <th>Año de introducción</th>
+                                                <th>Velocidad de transferencia</th>
+                                                <th>Voltaje</th>
+                                                <th>Capacidades típicas</th>
+                                                <th>Características distintivas</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td><strong>DDR1</strong></td>
+                                                <td>2000</td>
+                                                <td>200-400 MT/s</td>
+                                                <td>2.5V</td>
+                                                <td>128MB-1GB</td>
+                                                <td>Primera generación con transferencia en doble flanco</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>DDR2</strong></td>
+                                                <td>2003</td>
+                                                <td>400-800 MT/s</td>
+                                                <td>1.8V</td>
+                                                <td>256MB-4GB</td>
+                                                <td>Prefetch de 4 bits, mayor eficiencia</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>DDR3</strong></td>
+                                                <td>2007</td>
+                                                <td>800-1600 MT/s</td>
+                                                <td>1.5V</td>
+                                                <td>1GB-8GB</td>
+                                                <td>Prefetch de 8 bits, modo de bajo consumo</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>DDR4</strong></td>
+                                                <td>2014</td>
+                                                <td>1600-3200 MT/s</td>
+                                                <td>1.2V</td>
+                                                <td>4GB-64GB</td>
+                                                <td>Mayor capacidad de banco, corrección de errores mejorada</td>
+                                            </tr>
+                                            <tr>
+                                                <td><strong>DDR5</strong></td>
+                                                <td>2021</td>
+                                                <td>3200-6400 MT/s</td>
+                                                <td>1.1V</td>
+                                                <td>8GB-128GB</td>
+                                                <td>Canales de 32 bits independientes, PMIC integrado</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+
+                            <div class="note-box">
+                                <h5><i class="fas fa-lightbulb me-2"></i>Observación importante</h5>
+                                <p>La evolución de las tecnologías DDR muestra varias tendencias claras:</p>
+                                <ol>
+                                    <li>Incremento constante de velocidad (aproximadamente duplicándose cada generación)</li>
+                                    <li>Reducción gradual del voltaje de operación (mayor eficiencia energética)</li>
+                                    <li>Aumento de las capacidades máximas soportadas</li>
+                                    <li>Adición de características avanzadas de gestión de energía y fiabilidad</li>
+                                </ol>
+                            </div>
+                        </section>
+
+                        <section id="memorias-emergentes">
+                            <h3 class="section-title">Memorias Emergentes y Tecnologías del Futuro</h3>
+                            
+                            <p>Más allá de las tecnologías tradicionales, han surgido nuevas arquitecturas de memoria que buscan superar las limitaciones fundamentales de las tecnologías actuales:</p>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="card h-100">
+                                        <div class="card-header bg-info">
+                                            <h5 class="card-title mb-0">HBM (High Bandwidth Memory)</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Principio de funcionamiento:</strong> Apila múltiples dies de DRAM conectados por TSVs (Through-Silicon Vias).</p>
+                                            <p><strong>Ventajas:</strong></p>
+                                            <ul>
+                                                <li>Ancho de banda extremadamente alto (hasta 1 TB/s)</li>
+                                                <li>Mayor eficiencia energética por bit transferido</li>
+                                                <li>Factor de forma compacto</li>
+                                            </ul>
+                                            <p><strong>Aplicaciones:</strong> GPUs de alto rendimiento, aceleradores de IA, supercomputación</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card h-100">
+                                        <div class="card-header bg-info">
+                                            <h5 class="card-title mb-0">3D XPoint (Optane)</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Principio de funcionamiento:</strong> Tecnología de cambio de fase que altera la resistencia eléctrica del material.</p>
+                                            <p><strong>Ventajas:</strong></p>
+                                            <ul>
+                                                <li>No volátil (mantiene datos sin energía)</li>
+                                                <li>Velocidad próxima a DRAM</li>
+                                                <li>Mayor durabilidad que NAND Flash</li>
+                                            </ul>
+                                            <p><strong>Aplicaciones:</strong> Capa intermedia entre DRAM y almacenamiento, memoria persistente</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <div class="card h-100">
+                                        <div class="card-header bg-info">
+                                            <h5 class="card-title mb-0">MRAM (Magnetoresistive RAM)</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Principio de funcionamiento:</strong> Almacena datos mediante orientación magnética en elementos de memoria.</p>
+                                            <p><strong>Ventajas:</strong></p>
+                                            <ul>
+                                                <li>No volátil con velocidad similar a SRAM</li>
+                                                <li>Ciclos de escritura ilimitados teóricamente</li>
+                                                <li>Resistente a radiación</li>
+                                            </ul>
+                                            <p><strong>Aplicaciones:</strong> Sistemas industriales, aeroespaciales, automoción, dispositivos embebidos</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="card h-100">
+                                        <div class="card-header bg-info">
+                                            <h5 class="card-title mb-0">ReRAM (Resistive RAM)</h5>
+                                        </div>
+                                        <div class="card-body">
+                                            <p><strong>Principio de funcionamiento:</strong> Cambia la resistencia eléctrica de un dieléctrico de capa fina.</p>
+                                            <p><strong>Ventajas:</strong></p>
+                                            <ul>
+                                                <li>Alta densidad y escalabilidad</li>
+                                                <li>Bajo consumo energético</li>
+                                                <li>Conmutación rápida entre estados</li>
+                                            </ul>
+                                            <p><strong>Aplicaciones:</strong> Computación neuromórfica, sistemas de bajo consumo, IoT</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="concept-card green">
+                                <h4><i class="fas fa-rocket me-2"></i>El Horizonte de las Memorias Emergentes</h4>
+                                <p>Estas tecnologías emergentes comparten algunas características que podrían transformar radicalmente la arquitectura de memoria tradicional:</p>
+                                <ul>
+                                    <li><strong>Convergencia almacenamiento-memoria</strong>: Difuminan la línea entre memoria volátil y almacenamiento permanente.</li>
+                                    <li><strong>Computación en memoria (In-Memory Computing)</strong>: Permiten realizar operaciones lógicas dentro de la propia memoria.</li>
+                                    <li><strong>Arquitecturas en 3D</strong>: Superan las limitaciones bidimensionales de fabricación de chips.</li>
+                                    <li><strong>Reducción de jerarquía</strong>: Potencial para simplificar los niveles tradicionales de la jerarquía de memoria.</li>
+                                </ul>
+                            </div>
+                        </section>
+
+                        <section id="comparacion-tecnica">
+                            <h3 class="section-title">Comparación Técnica entre Tecnologías de Memoria</h3>
+                            
+                            <p>Para seleccionar adecuadamente la tecnología de memoria para un sistema específico, es necesario comprender las diferencias técnicas entre ellas:</p>
+
+                            <div class="table-responsive">
+                                <table class="table table-bordered table-striped">
+                                    <thead class="table-warning">
+                                        <tr>
+                                            <th>Parámetro</th>
+                                            <th>Definición</th>
+                                            <th>Importancia</th>
+                                            <th>Ejemplo comparativo</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td><strong>Velocidad</strong><br>(Latencia)</td>
+                                            <td>Tiempo que tarda en acceder a un dato</td>
+                                            <td>Define cuánto debe esperar el procesador para recibir datos</td>
+                                            <td>SRAM: ~1-10ns<br>DRAM: ~50-100ns<br>3D XPoint: ~100-500ns<br>SSD NAND: ~20-100μs</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Ancho de banda</strong></td>
+                                            <td>Cantidad de datos transferibles por segundo</td>
+                                            <td>Crucial para operaciones secuenciales y procesamiento masivo</td>
+                                            <td>DDR4-3200: ~25 GB/s<br>HBM2: ~256-512 GB/s<br>GDDR6: ~448-768 GB/s</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Consumo energético</strong></td>
+                                            <td>Energía requerida para mantener y acceder a datos</td>
+                                            <td>Impacto en autonomía, disipación térmica y costos operativos</td>
+                                            <td>LPDDR5: ~1.05V<br>DDR4: ~1.2V<br>SRAM: ~0.8-1.2V (área pequeña)</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Densidad</strong></td>
+                                            <td>Cantidad de datos por unidad de área</td>
+                                            <td>Determina capacidad máxima en espacio físico limitado</td>
+                                            <td>SRAM: Baja densidad<br>DRAM: Media densidad<br>NAND 3D: Alta densidad</td>
+                                        </tr>
+                                        <tr>
+                                            <td><strong>Durabilidad</strong><br>(P/E Cycles)</td>
+                                            <td>Ciclos de escritura/borrado antes de fallar</td>
+                                            <td>Crítico para memorias no volátiles y sistemas de larga vida</td>
+                                            <td>DRAM: Ilimitado<br>3D XPoint: ~10⁷ ciclos<br>SSD NAND TLC: ~10³-10⁴ ciclos</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="example-box">
+                                <h5><i class="fas fa-tasks me-2"></i>Caso práctico: Selección de memoria para diferentes aplicaciones</h5>
+                                <div class="table-responsive">
+                                    <table class="table table-sm">
+                                        <thead class="table-secondary">
+                                            <tr>
+                                                <th>Tipo de sistema</th>
+                                                <th>Requisitos críticos</th>
+                                                <th>Tecnología recomendada</th>
+                                                <th>Justificación</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>Servidor de base de datos en tiempo real</td>
+                                                <td>Alta velocidad, gran capacidad, fiabilidad</td>
+                                                <td>DDR5 + Optane Persistent Memory</td>
+                                                <td>Combina latencia baja con persistencia y capacidad para grandes conjuntos de datos</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Dispositivo IoT con batería</td>
+                                                <td>Bajo consumo, retención de datos sin alimentación</td>
+                                                <td>LPDDR4 + MRAM</td>
+                                                <td>Minimiza consumo en funcionamiento y mantiene datos sin energía</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Tarjeta gráfica de alto rendimiento</td>
+                                                <td>Máximo ancho de banda, procesamiento paralelo</td>
+                                                <td>HBM2E o GDDR6X</td>
+                                                <td>Proporciona el mayor ancho de banda para transferencia masiva de datos</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Sistema crítico industrial</td>
+                                                <td>Tolerancia a radiación, temperatura, fiabilidad</td>
+                                                <td>MRAM + memoria ECC</td>
+                                                <td>Ofrece resistencia a condiciones ambientales adversas y alta fiabilidad</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </section>
+
+                        <div class="mt-4 p-3 bg-light rounded">
+                            <h4>Competencias a desarrollar en este tema:</h4>
+                            <ul>
+                                <li>Seleccionar memorias adecuadas según el tipo de sistema o aplicación.</li>
+                                <li>Reconocer tendencias tecnológicas que impactan en el diseño de sistemas.</li>
+                                <li>Evaluar compromisos de costo, rendimiento y consumo energético.</li>
+                                <li>Predecir la evolución futura de las tecnologías de memoria.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </section>
+            </div>
+
+        </main>
+        <footer class="bg-dark text-white text-center py-3">
+            <p>Desarrollado por Edilson Laura</p>
+            <p>Curso de Arquitectura de Computadoras</p>
+            <p>Universidad Adventista de Bolivia</p>
+            <p><a href="https://www.uab.edu.bo/" class="text-white">www.uab.edu.bo</a></p>
+        </footer>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    </div>
+    </body>
+    </html>
