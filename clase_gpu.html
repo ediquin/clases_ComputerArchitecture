@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arquitectura de GPU - Universidad Adventista de Bolivia</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 4rem 0;
+        }
+        .diagram-container {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 2rem;
+            margin: 2rem 0;
+            border: 2px solid #e9ecef;
+        }
+        .gpu-component {
+            background: #fff;
+            border: 2px solid #007bff;
+            border-radius: 8px;
+            padding: 1rem;
+            margin: 0.5rem;
+            text-align: center;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        .gpu-component:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,123,255,0.2);
+        }
+        .memory-block {
+            background: #28a745;
+            color: white;
+            padding: 0.5rem;
+            margin: 0.2rem;
+            border-radius: 4px;
+            display: inline-block;
+            width: 30px;
+            height: 30px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+        .processing-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            margin: 2rem 0;
+        }
+        .flow-step {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            color: white;
+            padding: 1rem;
+            border-radius: 50%;
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin: 0.5rem;
+        }
+        .arrow {
+            font-size: 2rem;
+            color: #666;
+            margin: 0 1rem;
+        }
+        .code-example {
+            background: #2d3748;
+            color: #e2e8f0;
+            padding: 1.5rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+        }
+        .performance-comparison {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a52);
+            color: white;
+            padding: 2rem;
+            border-radius: 10px;
+            margin: 2rem 0;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <div class="hero-section text-center">
+        <div class="container">
+            <h1 class="display-4 fw-bold mb-3">UNIVERSIDAD ADVENTISTA DE BOLIVIA</h1>
+            <h2 class="h3 mb-4">Arquitectura de Computadoras</h2>
+            <h3 class="h4 mb-4">Introducción a las Tarjetas de Video (GPU)</h3>
+            <p class="lead">Autor: Edilson Laura - ediquin</p>
+        </div>
+    </div>
+
+    <div class="container my-5">
+        <!-- Introducción -->
+        <section class="mb-5">
+            <h2 class="text-primary mb-4"><i class="fas fa-microchip me-2"></i>¿Qué es una GPU?</h2>
+            <div class="row">
+                <div class="col-lg-8">
+                    <p class="lead">Una <strong>GPU (Graphics Processing Unit)</strong> o Unidad de Procesamiento Gráfico es un procesador especializado diseñado para acelerar el renderizado de gráficos y realizar cálculos paralelos de manera eficiente.</p>
+                    <p>A diferencia de las CPU que tienen pocos núcleos optimizados para procesamiento secuencial, las GPU tienen miles de núcleos más pequeños diseñados para procesamiento paralelo masivo.</p>
+                </div>
+                <div class="col-lg-4">
+                    <div class="alert alert-info">
+                        <h5><i class="fas fa-lightbulb me-2"></i>Dato Curioso</h5>
+                        <p class="mb-0">Una GPU moderna puede tener más de 10,000 núcleos de procesamiento, comparado con los 4-16 núcleos típicos de una CPU.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Arquitectura de GPU -->
+        <section class="mb-5">
+            <h2 class="text-primary mb-4"><i class="fas fa-sitemap me-2"></i>Arquitectura de una GPU</h2>
+            <div class="diagram-container">
+                <h4 class="text-center mb-4">Componentes Principales de una GPU</h4>
+                <div class="row">
+                    <div class="col-md-3">
+                        <div class="gpu-component" onclick="showInfo('sm')">
+                            <i class="fas fa-calculator fa-2x mb-2 text-primary"></i>
+                            <h6>Streaming Multiprocessors (SM)</h6>
+                            <small>Núcleos de procesamiento</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="gpu-component" onclick="showInfo('memory')">
+                            <i class="fas fa-memory fa-2x mb-2 text-success"></i>
+                            <h6>Memoria VRAM</h6>
+                            <small>Memoria de video</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="gpu-component" onclick="showInfo('scheduler')">
+                            <i class="fas fa-tasks fa-2x mb-2 text-warning"></i>
+                            <h6>Scheduler</h6>
+                            <small>Planificador de tareas</small>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="gpu-component" onclick="showInfo('cache')">
+                            <i class="fas fa-database fa-2x mb-2 text-danger"></i>
+                            <h6>Cache L2</h6>
+                            <small>Memoria caché</small>
+                        </div>
+                    </div>
+                </div>
+                
+                <div id="component-info" class="mt-4 p-3 bg-light rounded" style="display: none;">
+                    <div id="info-content"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Flujo de Procesamiento -->
+        <section class="mb-5">
+            <h2 class="text-primary mb-4"><i class="fas fa-arrow-right me-2"></i>Flujo de Procesamiento de Datos</h2>
+            <div class="diagram-container">
+                <h4 class="text-center mb-4">Cómo procesa datos una GPU</h4>
+                <div class="processing-flow justify-content-center">
+                    <div class="flow-step">
+                        <span>1</span>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="flow-step">
+                        <span>2</span>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="flow-step">
+                        <span>3</span>
+                    </div>
+                    <div class="arrow">→</div>
+                    <div class="flow-step">
+                        <span>4</span>
+                    </div>
+                </div>
+                
+                <div class="row mt-4">
+                    <div class="col-md-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title text-success">1. Entrada de Datos</h6>
+                                <p class="card-text">Los datos llegan desde la CPU a través del bus PCIe</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title text-success">2. Distribución</h6>
+                                <p class="card-text">El scheduler distribuye las tareas entre los SM disponibles</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title text-success">3. Procesamiento</h6>
+                                <p class="card-text">Miles de núcleos procesan los datos en paralelo</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <div class="card h-100">
+                            <div class="card-body text-center">
+                                <h6 class="card-title text-success">4. Salida</h6>
+                                <p class="card-text">Los resultados se almacenan en VRAM o se envían de vuelta</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Comparación CPU vs GPU -->
+        <section class="mb-5">
+            <h2 class="text-primary mb-4"><i class="fas fa-balance-scale me-2"></i>CPU vs GPU</h2>
+            <div class="performance-comparison">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h4><i class="fas fa-microchip me-2"></i>CPU</h4>
+                        <ul>
+                            <li>Pocos núcleos (4-16)</li>
+                            <li>Optimizada para tareas secuenciales</li>
+                            <li>Gran memoria caché</li>
+                            <li>Excelente para lógica compleja</li>
+                            <li>Baja latencia</li>
+                        </ul>
+                    </div>
+                    <div class="col-md-6">
+                        <h4><i class="fas fa-tv me-2"></i>GPU</h4>
+                        <ul>
+                            <li>Miles de núcleos (1000+)</li>
+                            <li>Optimizada para paralelismo</li>
+                            <li>Memoria de alta velocidad</li>
+                            <li>Excelente para cálculos repetitivos</li>
+                            <li>Alto throughput</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Memoria de Video -->
+        <section class="mb-5">
+            <h2 class="text-primary mb-4"><i class="fas fa-memory me-2"></i>Memoria de Video (VRAM)</h2>
+            <div class="row">
+                <div class="col-lg-8">
+                    <p>La VRAM es la memoria dedicada de la GPU, diseñada para manejar grandes cantidades de datos gráficos con alta velocidad de acceso.</p>
+                    <h5>Tipos de VRAM:</h5>
+                    <ul>
+                        <li><strong>GDDR6/6X:</strong> Memoria más común en GPUs modernas</li>
+                        <li><strong>HBM (High Bandwidth Memory):</strong> Memoria de ultra-alta velocidad</li>
+                        <li><strong>DDR4:</strong> Usado en GPUs integradas</li>
+                    </ul>
+                </div>
+                <div class="col-lg-4">
+                    <div class="diagram-container">
+                        <h6 class="text-center">Simulación de VRAM (8GB)</h6>
+                        <div class="text-center">
+                            <div id="vram-blocks"></div>
+                            <small class="text-muted">Cada bloque = 1GB</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Aplicaciones -->
+        <section class="mb-5">
+            <h2 class="text-primary mb-4"><i class="fas fa-rocket me-2"></i>Aplicaciones de las GPU</h2>
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-body text-center">
+                            <i class="fas fa-gamepad fa-3x text-primary mb-3"></i>
+                            <h5>Gaming</h5>
+                            <p>Renderizado de gráficos 3D en tiempo real</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-body text-center">
+                            <i class="fas fa-brain fa-3x text-success mb-3"></i>
+                            <h5>Machine Learning</h5>
+                            <p>Entrenamiento de redes neuronales</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="card mb-3">
+                        <div class="card-body text-center">
+                            <i class="fas fa-bitcoin fa-3x text-warning mb-3"></i>
+                            <h5>Criptomonedas</h5>
+                            <p>Minería y cálculos criptográficos</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Ejemplo de Código -->
+        <section class="mb-5">
+            <h2 class="text-primary mb-4"><i class="fas fa-code me-2"></i>Ejemplo: Paralelismo en GPU</h2>
+            <p>Este ejemplo muestra cómo se vería un kernel básico de CUDA para sumar dos vectores:</p>
+            <div class="code-example">
+<pre><code>// Kernel de CUDA para suma de vectores
+__global__ void sumaVectores(float* A, float* B, float* C, int N) {
+    int i = blockIdx.x * blockDim.x + threadIdx.x;
+    
+    if (i < N) {
+        C[i] = A[i] + B[i];  // Cada thread procesa un elemento
+    }
+}
+
+// Llamada al kernel desde el host
+int main() {
+    // ... inicialización de datos ...
+    
+    // Configuración de la grilla de threads
+    dim3 threadsPerBlock(256);
+    dim3 numBlocks((N + threadsPerBlock.x - 1) / threadsPerBlock.x);
+    
+    // Ejecutar kernel en GPU
+    sumaVectores<<<numBlocks, threadsPerBlock>>>(d_A, d_B, d_C, N);
+    
+    return 0;
+}</code></pre>
+            </div>
+        </section>
+
+        <!-- Conclusiones -->
+        <section class="mb-5">
+            <h2 class="text-primary mb-4"><i class="fas fa-check-circle me-2"></i>Puntos Clave</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="alert alert-success">
+                        <h5>Ventajas de las GPU:</h5>
+                        <ul class="mb-0">
+                            <li>Procesamiento paralelo masivo</li>
+                            <li>Alto throughput de datos</li>
+                            <li>Optimizadas para cálculos matemáticos</li>
+                            <li>Memoria de alta velocidad</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="alert alert-warning">
+                        <h5>Limitaciones:</h5>
+                        <ul class="mb-0">
+                            <li>No adecuadas para lógica compleja</li>
+                            <li>Mayor latencia que CPU</li>
+                            <li>Requieren programación especializada</li>
+                            <li>Alto consumo energético</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-4">
+        <div class="container">
+            <p>&copy; 2024 Universidad Adventista de Bolivia - Edilson Laura</p>
+            <p><small>Arquitectura de Computadoras - Material Educativo</small></p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Información de componentes
+        const componentInfo = {
+            sm: {
+                title: "Streaming Multiprocessors (SM)",
+                content: "Los SM son los núcleos de procesamiento de la GPU. Cada SM contiene múltiples CUDA cores que pueden ejecutar threads en paralelo. Son responsables de ejecutar los kernels y manejar la memoria compartida."
+            },
+            memory: {
+                title: "Memoria VRAM",
+                content: "La VRAM es la memoria dedicada de la GPU, optimizada para acceso de alta velocidad. Almacena texturas, buffers de frame, y datos de aplicaciones. Su ancho de banda es mucho mayor que la RAM del sistema."
+            },
+            scheduler: {
+                title: "Scheduler (Planificador)",
+                content: "El scheduler distribuye los bloques de threads entre los SM disponibles. Maneja la asignación de recursos y optimiza la utilización de los núcleos de procesamiento."
+            },
+            cache: {
+                title: "Cache L2",
+                content: "La cache L2 es compartida entre todos los SM y proporciona acceso rápido a datos frecuentemente utilizados. Reduce la latencia de acceso a la memoria global."
+            }
+        };
+
+        function showInfo(component) {
+            const info = componentInfo[component];
+            const infoDiv = document.getElementById('component-info');
+            const contentDiv = document.getElementById('info-content');
+            
+            contentDiv.innerHTML = `
+                <h5 class="text-primary">${info.title}</h5>
+                <p>${info.content}</p>
+            `;
+            
+            infoDiv.style.display = 'block';
+        }
+
+        // Generar bloques de VRAM
+        function generateVRAMBlocks() {
+            const container = document.getElementById('vram-blocks');
+            for (let i = 0; i < 8; i++) {
+                const block = document.createElement('div');
+                block.className = 'memory-block';
+                block.textContent = i + 1;
+                block.title = `Bloque ${i + 1}GB`;
+                container.appendChild(block);
+            }
+        }
+
+        // Inicializar cuando se carga la página
+        document.addEventListener('DOMContentLoaded', function() {
+            generateVRAMBlocks();
+        });
+    </script>
+</body>
+</html>
